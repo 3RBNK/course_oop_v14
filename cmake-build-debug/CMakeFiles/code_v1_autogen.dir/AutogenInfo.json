@@ -248,6 +248,12 @@
 			null
 		],
 		[
+			"D:/home_work/oop/course/code_v1/include/auth_system.h",
+			"MU",
+			"6YEA5652QU/moc_auth_system.cpp",
+			null
+		],
+		[
 			"D:/home_work/oop/course/code_v1/include/check_correct.h",
 			"MU",
 			"6YEA5652QU/moc_check_correct.cpp",
@@ -384,7 +390,10 @@
 	"SETTINGS_FILE" : "D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/code_v1_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[ "D:/home_work/oop/course/code_v1/src/main.cpp", "MU", null ]
+		[ "D:/home_work/oop/course/code_v1/src/auditorium.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/auth_system.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/main.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/user.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

@@ -16,18 +16,12 @@ find_package(Qt6 COMPONENTS
 
 add_executable(code_v1 src/main.cpp
         include/user.h
-        include/group.h
-        include/teacher.h
-        include/schedule.h
         include/lesson.h
         include/auditorium.h
-        include/norification.h
-        include/interface.h
-        include/user_interface.h
-        include/admin_interface.h
-        include/check_correct.h
-        include/search_now.h
-        include/time_slot.h)
+        src/auditorium.cpp
+        src/user.cpp
+        include/auth_system.h
+        src/auth_system.cpp)
 target_link_libraries(code_v1
         Qt::Core
         Qt::Gui
