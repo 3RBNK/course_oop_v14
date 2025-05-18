@@ -29,7 +29,11 @@ add_executable(code_v1 src/main.cpp
         src/user_interface.cpp
         include/group.h
         include/teacher.h
-        src/lesson.cpp)
+        src/lesson.cpp
+        include/auth_window.h
+        src/auth_window.cpp
+        src/group.cpp
+        src/teacher.cpp)
 target_link_libraries(code_v1
         Qt::Core
         Qt::Gui

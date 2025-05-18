@@ -298,6 +298,7 @@ code_v1_autogen/timestamp: \
 	D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/moc_predefs.h \
 	D:/home_work/oop/course/code_v1/include/auditorium.h \
 	D:/home_work/oop/course/code_v1/include/auth_system.h \
+	D:/home_work/oop/course/code_v1/include/auth_window.h \
 	D:/home_work/oop/course/code_v1/include/group.h \
 	D:/home_work/oop/course/code_v1/include/interface.h \
 	D:/home_work/oop/course/code_v1/include/lesson.h \
@@ -307,6 +308,7 @@ code_v1_autogen/timestamp: \
 	D:/home_work/oop/course/code_v1/include/user_interface.h \
 	D:/home_work/oop/course/code_v1/src/auditorium.cpp \
 	D:/home_work/oop/course/code_v1/src/auth_system.cpp \
+	D:/home_work/oop/course/code_v1/src/auth_window.cpp \
 	D:/home_work/oop/course/code_v1/src/lesson.cpp \
 	D:/home_work/oop/course/code_v1/src/main.cpp \
 	D:/home_work/oop/course/code_v1/src/schedule.cpp \
@@ -446,6 +448,7 @@ code_v1_autogen/timestamp: \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qkeysequence.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpaintdevice.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpalette.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpen.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpicture.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpixelformat.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qpixmap.h \
@@ -453,7 +456,10 @@ code_v1_autogen/timestamp: \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qregion.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qrgb.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qrgba64.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtextcursor.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtextdocument.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtextformat.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtextoption.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtgui-config.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtguiexports.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qtguiglobal.h \
@@ -463,9 +469,12 @@ code_v1_autogen/timestamp: \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtGui/qwindowdefs_win.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QHBoxLayout \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QLabel \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QLineEdit \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QPushButton \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QTableWidget \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QVBoxLayout \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/QWidget \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qabstractbutton.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qabstractitemdelegate.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qabstractitemview.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qabstractscrollarea.h \
@@ -477,6 +486,8 @@ code_v1_autogen/timestamp: \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qlabel.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qlayout.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qlayoutitem.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qlineedit.h \
+	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qpushbutton.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qrubberband.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qsizepolicy.h \
 	D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets/qslider.h \

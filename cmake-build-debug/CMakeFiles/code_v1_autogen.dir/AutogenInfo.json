@@ -248,6 +248,12 @@
 			null
 		],
 		[
+			"D:/home_work/oop/course/code_v1/include/auth_window.h",
+			"MU",
+			"6YEA5652QU/moc_auth_window.cpp",
+			null
+		],
+		[
 			"D:/home_work/oop/course/code_v1/include/group.h",
 			"MU",
 			"6YEA5652QU/moc_group.cpp",
@@ -362,9 +368,12 @@
 	[
 		[ "D:/home_work/oop/course/code_v1/src/auditorium.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/auth_system.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/auth_window.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/group.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/lesson.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/main.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/schedule.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/teacher.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/user.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/user_interface.cpp", "MU", null ]
 	],
