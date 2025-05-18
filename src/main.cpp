@@ -1,10 +1,15 @@
 #include <QApplication>
-#include <QPushButton>
+#include "../include/user.h"
+#include "../include/user_interface.h"
 
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
-    return QApplication::exec();
+    QApplication app(argc, argv);
+
+    User *user = new User(123, "Иванов И. И.", "Студент", "ivanov", "1234");
+    UserInterface *ui = new UserInterface(user);
+
+    ui->show_schedule();
+    ui->display();
+
+    return app.exec();
 }

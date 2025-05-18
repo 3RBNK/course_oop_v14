@@ -236,12 +236,6 @@
 	"HEADERS" : 
 	[
 		[
-			"D:/home_work/oop/course/code_v1/include/admin_interface.h",
-			"MU",
-			"6YEA5652QU/moc_admin_interface.cpp",
-			null
-		],
-		[
 			"D:/home_work/oop/course/code_v1/include/auditorium.h",
 			"MU",
 			"6YEA5652QU/moc_auditorium.cpp",
@@ -251,12 +245,6 @@
 			"D:/home_work/oop/course/code_v1/include/auth_system.h",
 			"MU",
 			"6YEA5652QU/moc_auth_system.cpp",
-			null
-		],
-		[
-			"D:/home_work/oop/course/code_v1/include/check_correct.h",
-			"MU",
-			"6YEA5652QU/moc_check_correct.cpp",
 			null
 		],
 		[
@@ -278,33 +266,15 @@
 			null
 		],
 		[
-			"D:/home_work/oop/course/code_v1/include/norification.h",
-			"MU",
-			"6YEA5652QU/moc_norification.cpp",
-			null
-		],
-		[
 			"D:/home_work/oop/course/code_v1/include/schedule.h",
 			"MU",
 			"6YEA5652QU/moc_schedule.cpp",
 			null
 		],
 		[
-			"D:/home_work/oop/course/code_v1/include/search_now.h",
-			"MU",
-			"6YEA5652QU/moc_search_now.cpp",
-			null
-		],
-		[
 			"D:/home_work/oop/course/code_v1/include/teacher.h",
 			"MU",
 			"6YEA5652QU/moc_teacher.cpp",
-			null
-		],
-		[
-			"D:/home_work/oop/course/code_v1/include/time_slot.h",
-			"MU",
-			"6YEA5652QU/moc_time_slot.cpp",
 			null
 		],
 		[
@@ -392,8 +362,11 @@
 	[
 		[ "D:/home_work/oop/course/code_v1/src/auditorium.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/auth_system.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/lesson.cpp", "MU", null ],
 		[ "D:/home_work/oop/course/code_v1/src/main.cpp", "MU", null ],
-		[ "D:/home_work/oop/course/code_v1/src/user.cpp", "MU", null ]
+		[ "D:/home_work/oop/course/code_v1/src/schedule.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/user.cpp", "MU", null ],
+		[ "D:/home_work/oop/course/code_v1/src/user_interface.cpp", "MU", null ]
 	],
 	"UIC_OPTIONS" : [],
 	"UIC_SEARCH_PATHS" : [],

@@ -21,7 +21,15 @@ add_executable(code_v1 src/main.cpp
         src/auditorium.cpp
         src/user.cpp
         include/auth_system.h
-        src/auth_system.cpp)
+        src/auth_system.cpp
+        include/interface.h
+        include/user_interface.h
+        include/schedule.h
+        src/schedule.cpp
+        src/user_interface.cpp
+        include/group.h
+        include/teacher.h
+        src/lesson.cpp)
 target_link_libraries(code_v1
         Qt::Core
         Qt::Gui

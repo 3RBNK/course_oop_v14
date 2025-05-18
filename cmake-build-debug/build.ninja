@@ -89,6 +89,30 @@ build CMakeFiles/code_v1.dir/src/auth_system.cpp.obj: CXX_COMPILER__code_v1_unsc
   OBJECT_DIR = CMakeFiles\code_v1.dir
   OBJECT_FILE_DIR = CMakeFiles\code_v1.dir\src
 
+build CMakeFiles/code_v1.dir/src/schedule.cpp.obj: CXX_COMPILER__code_v1_unscanned_Debug D$:/home_work/oop/course/code_v1/src/schedule.cpp || cmake_object_order_depends_target_code_v1
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\code_v1.dir\src\schedule.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -isystem D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/include -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtCore -isystem D:/soft/for_qt/6.5.3/mingw_64/include -isystem D:/soft/for_qt/6.5.3/mingw_64/mkspecs/win32-g++ -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtGui -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets
+  OBJECT_DIR = CMakeFiles\code_v1.dir
+  OBJECT_FILE_DIR = CMakeFiles\code_v1.dir\src
+
+build CMakeFiles/code_v1.dir/src/user_interface.cpp.obj: CXX_COMPILER__code_v1_unscanned_Debug D$:/home_work/oop/course/code_v1/src/user_interface.cpp || cmake_object_order_depends_target_code_v1
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\code_v1.dir\src\user_interface.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -isystem D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/include -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtCore -isystem D:/soft/for_qt/6.5.3/mingw_64/include -isystem D:/soft/for_qt/6.5.3/mingw_64/mkspecs/win32-g++ -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtGui -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets
+  OBJECT_DIR = CMakeFiles\code_v1.dir
+  OBJECT_FILE_DIR = CMakeFiles\code_v1.dir\src
+
+build CMakeFiles/code_v1.dir/src/lesson.cpp.obj: CXX_COMPILER__code_v1_unscanned_Debug D$:/home_work/oop/course/code_v1/src/lesson.cpp || cmake_object_order_depends_target_code_v1
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\code_v1.dir\src\lesson.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -isystem D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/include -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtCore -isystem D:/soft/for_qt/6.5.3/mingw_64/include -isystem D:/soft/for_qt/6.5.3/mingw_64/mkspecs/win32-g++ -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtGui -isystem D:/soft/for_qt/6.5.3/mingw_64/include/QtWidgets
+  OBJECT_DIR = CMakeFiles\code_v1.dir
+  OBJECT_FILE_DIR = CMakeFiles\code_v1.dir\src
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target code_v1
@@ -97,7 +121,7 @@ build CMakeFiles/code_v1.dir/src/auth_system.cpp.obj: CXX_COMPILER__code_v1_unsc
 #############################################
 # Link the executable code_v1.exe
 
-build code_v1.exe: CXX_EXECUTABLE_LINKER__code_v1_Debug CMakeFiles/code_v1.dir/code_v1_autogen/mocs_compilation.cpp.obj CMakeFiles/code_v1.dir/src/main.cpp.obj CMakeFiles/code_v1.dir/src/auditorium.cpp.obj CMakeFiles/code_v1.dir/src/user.cpp.obj CMakeFiles/code_v1.dir/src/auth_system.cpp.obj | D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Widgets.a D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Gui.a D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Core.a || code_v1_autogen code_v1_autogen_timestamp_deps
+build code_v1.exe: CXX_EXECUTABLE_LINKER__code_v1_Debug CMakeFiles/code_v1.dir/code_v1_autogen/mocs_compilation.cpp.obj CMakeFiles/code_v1.dir/src/main.cpp.obj CMakeFiles/code_v1.dir/src/auditorium.cpp.obj CMakeFiles/code_v1.dir/src/user.cpp.obj CMakeFiles/code_v1.dir/src/auth_system.cpp.obj CMakeFiles/code_v1.dir/src/schedule.cpp.obj CMakeFiles/code_v1.dir/src/user_interface.cpp.obj CMakeFiles/code_v1.dir/src/lesson.cpp.obj | D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Widgets.a D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Gui.a D$:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Core.a || code_v1_autogen code_v1_autogen_timestamp_deps
   FLAGS = -g
   LINK_LIBRARIES = D:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Widgets.a  D:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Gui.a  D:/soft/for_qt/6.5.3/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -ld3d11  -ldxgi  -ldxguid  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\code_v1.dir
