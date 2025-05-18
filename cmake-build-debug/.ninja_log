@@ -1,0 +1,9 @@
+# ninja log v6
+7	512	7692774132771855	build.ninja	d038e2b3c45fadbc
+3	135	7692758071932602	code_v1_autogen/timestamp	5f10b8c45ffe8f6f
+2776	3655	7692758098653433	code_v1.exe	a89c14bddbf60caa
+3	135	7692758071932602	code_v1_autogen/mocs_compilation.cpp	5f10b8c45ffe8f6f
+3	135	7692758071932602	D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/timestamp	5f10b8c45ffe8f6f
+3	135	7692758071932602	D:/home_work/oop/course/code_v1/cmake-build-debug/code_v1_autogen/mocs_compilation.cpp	5f10b8c45ffe8f6f
+137	184	7692758072255527	CMakeFiles/code_v1.dir/code_v1_autogen/mocs_compilation.cpp.obj	3545d4c0946501b9
+140	2775	7692758072285531	CMakeFiles/code_v1.dir/main.cpp.obj	70a5a4c347c1aa12

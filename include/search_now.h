@@ -1,0 +1,4 @@
+#ifndef CODE_V1_SEARCH_NOW_H
+#define CODE_V1_SEARCH_NOW_H
+
+#endif //CODE_V1_SEARCH_NOW_H

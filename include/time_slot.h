@@ -1,0 +1,4 @@
+#ifndef CODE_V1_TIME_SLOT_H
+#define CODE_V1_TIME_SLOT_H
+
+#endif //CODE_V1_TIME_SLOT_H

@@ -1,0 +1,4 @@
+#ifndef CODE_V1_LESSON_H
+#define CODE_V1_LESSON_H
+
+#endif //CODE_V1_LESSON_H
