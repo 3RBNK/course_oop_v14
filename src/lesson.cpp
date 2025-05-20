@@ -38,24 +38,25 @@ Auditorium Lesson::auditorium() const {
 }
 
 bool Lesson::conflict_with(const Lesson &other) const {
-    // Время занятий
-    QDateTime thisEnd = m_time_slot.addSecs(90 * 60);  // 1.5 часа
-    QDateTime otherEnd = other.time_slot().addSecs(90 * 60);
-    bool overlaps = m_time_slot < otherEnd && other.time_slot() < thisEnd;
+    QDateTime this_end = m_time_slot.addSecs(90 * 60);
+    QDateTime other_end = other.time_slot().addSecs(90 * 60);
+    bool overlaps = m_time_slot < other_end && other.time_slot() < this_end;
 
-    bool teacherConflict = m_teacher.teacher_id() == other.teacher().teacher_id();
-    bool roomConflict = m_auditorium.room_id() == other.auditorium().room_id();
+    bool teacher_conflict = m_teacher.teacher_id() == other.teacher().teacher_id();
+    bool room_conflict = m_auditorium.room_id() == other.auditorium().room_id();
 
-    bool groupConflict = false;
+    bool group_conflict = false;
     for (const Group &group : m_groups) {
         for (const Group &otherGroup : other.groups()) {
             if (group.group_id() == otherGroup.group_id()) {
-                groupConflict = true;
+                group_conflict = true;
                 break;
             }
         }
-        if (groupConflict) break;
+        if (group_conflict) {
+            break;
+        }
     }
 
-    return overlaps && (teacherConflict || roomConflict || groupConflict);
+    return overlaps && (teacher_conflict || room_conflict || group_conflict);
 }

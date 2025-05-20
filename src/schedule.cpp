@@ -1,7 +1,7 @@
 #include "../include/schedule.h"
 
-Schedule::Schedule(QObject *parent)
-        : QObject(parent) {}
+Schedule::Schedule(QWidget *parent)
+        : QWidget(parent) {}
 
 void Schedule::add_lesson(const QSharedPointer<Lesson> &lesson) {
     m_lessons.append(lesson);

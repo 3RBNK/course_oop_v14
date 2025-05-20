@@ -4,7 +4,6 @@ AuthWindow::AuthWindow(QWidget *parent)
         : QWidget(parent), authSystem(new AuthSystem(this))
 {
     setupUI();
-    mockUsers();
 }
 
 void AuthWindow::setupUI() {
@@ -34,11 +33,6 @@ void AuthWindow::setupUI() {
     resize(300, 180);
 }
 
-void AuthWindow::mockUsers() {
-    authSystem->add_user(new User(1, "Иванов И. И.", "Студент", "ivanov", "1234"));
-    authSystem->add_user(new User(2, "Петров П. П.", "Преподаватель", "petrov", "qwerty"));
-}
-
 void AuthWindow::handleLogin() {
     QString login = loginEdit->text();
     QString password = passwordEdit->text();
@@ -48,7 +42,7 @@ void AuthWindow::handleLogin() {
         statusLabel->setText("Успешный вход!");
 
         auto *ui = new UserInterface(user);
-        ui->show_schedule();
+
         ui->display();
 
         close();

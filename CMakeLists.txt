@@ -33,7 +33,9 @@ add_executable(code_v1 src/main.cpp
         include/auth_window.h
         src/auth_window.cpp
         src/group.cpp
-        src/teacher.cpp)
+        src/teacher.cpp
+        include/check_correct.h
+        src/check_correct.cpp)
 target_link_libraries(code_v1
         Qt::Core
         Qt::Gui

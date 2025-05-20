@@ -1,17 +1,24 @@
 #include "../include/user.h"
 #include <QDebug>
 
-User::User(QObject *parent)
-        : QObject(parent), m_user_id(0) {
+
+User::User()
+        : m_user_id(0),
+          m_name(""),
+          m_role(""),
+          m_login(""),
+          m_password("")
+{
 }
 
-User::User(int user_id, const QString &name, const QString &role, const QString &login, const QString &password, QObject *parent)
-        : QObject(parent),
-          m_user_id(user_id),
+User::User(int userId, const QString &name, const QString &role,
+           const QString &login, const QString &password)
+        : m_user_id(userId),
           m_name(name),
           m_role(role),
           m_login(login),
-          m_password(password) {
+          m_password(password)
+{
 }
 
 int User::user_id() const {
@@ -38,18 +45,10 @@ void User::set_role(const QString &role) {
     m_role = role;
 }
 
-QString User::get_role() const {
-    return m_role;
-}
-
 QString User::login() const {
     return m_login;
 }
 
 QString User::password() const {
     return m_password;
-}
-
-void User::view_schedule() const {
-    qDebug() << "User:" << m_name << "(" << m_role << ") is viewing their schedule.";
 }

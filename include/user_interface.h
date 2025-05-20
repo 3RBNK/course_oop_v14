@@ -17,7 +17,6 @@ public:
     explicit UserInterface(User *user, QWidget *parent = nullptr);
 
     void display() override;
-    void show_schedule();
 private:
     User *m_user;
     Schedule *m_schedule;

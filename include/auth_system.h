@@ -5,6 +5,7 @@
 #include <QString>
 #include <QList>
 
+
 #include "user.h"
 
 
@@ -18,6 +19,8 @@ public:
     void add_user(User* user);
 private:
     QList<User*> m_users;
+
+    void load_users_from_file(const QString &filePath);
 
     friend class AdminInterface;
 };

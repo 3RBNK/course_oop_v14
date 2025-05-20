@@ -1,5 +1,0 @@
-D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/code_v1.dir
-D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/edit_cache.dir
-D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/code_v1_autogen_timestamp_deps.dir
-D:/home_work/oop/course/code_v1/cmake-build-debug/CMakeFiles/code_v1_autogen.dir

@@ -1,16 +1,16 @@
 #ifndef CODE_V1_SCHEDULE_H
 #define CODE_V1_SCHEDULE_H
 
-#include <QObject>
+#include <QWidget>
 #include <QList>
 #include <QSharedPointer>
 #include "lesson.h"
 
-class Schedule : public QObject {
+class Schedule : public QWidget {
 Q_OBJECT
 
 public:
-    explicit Schedule(QObject *parent = nullptr);
+    explicit Schedule(QWidget *parent = nullptr);
 
     void add_lesson(const QSharedPointer<Lesson> &lesson);
     void remove_lesson(int lesson_id);

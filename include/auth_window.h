@@ -26,7 +26,6 @@ private:
     AuthSystem *authSystem;
 
     void setupUI();
-    void mockUsers();  // временные пользователи
 };
 
 #endif //CODE_V1_AUTH_WINDOW_H

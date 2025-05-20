@@ -1,7 +1,6 @@
 #ifndef CODE_V1_LESSON_H
 #define CODE_V1_LESSON_H
 
-#include <QObject>
 #include <QDateTime>
 #include <QString>
 #include <QList>

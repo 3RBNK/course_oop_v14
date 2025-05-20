@@ -32,12 +32,3 @@ void UserInterface::display() {
     show();
 }
 
-void UserInterface::show_schedule() {
-    // Заглушка: можно добавить получение уроков по m_user->user_id()
-    m_schedule->add_lesson(Lesson(1, "ООП", QDateTime(QDate(2025, 5, 16), QTime(8, 15))));
-    m_schedule->add_lesson(Lesson(2, "Иссл. опер.", QDateTime(QDate(2025, 5, 16), QTime(10, 0))));
-    m_schedule->add_lesson(Lesson(3, "Выч. матем.", QDateTime(QDate(2025, 5, 14), QTime(11, 45))));
-
-    m_schedule->draw_schedule();
-}
-
