@@ -23,6 +23,7 @@ public:
     int lesson_id() const;
     QString subject() const;
     QDateTime time_slot() const;
+    QString lesson_info() const;
 
     Teacher teacher() const;
     QList<Group> groups() const;

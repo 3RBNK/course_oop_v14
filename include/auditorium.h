@@ -19,6 +19,8 @@ public:
     QStringList equipment() const;
     void set_equipment(const QStringList &equipment);
 
+    QString auditorium_info() const;
+
     bool is_available(const QDateTime &dateTime) const;
     void reserve_slot(const QDateTime &date_time);
     void release_slot(const QDateTime &date_time);

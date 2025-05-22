@@ -17,8 +17,6 @@ public:
     void set_group_id(int id);
     void set_course(int course);
 
-//    Lesson* get_subject(const QDateTime &date) const;
-
 private:
     int m_group_id;
     int m_course;

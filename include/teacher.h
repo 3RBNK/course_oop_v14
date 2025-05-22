@@ -18,7 +18,7 @@ public:
     void set_teacher_id(int id);
     void set_subject(const QString &subject);
 
-//    Lesson* get_subject(const QDateTime &date) const;
+    QString teacher_info() const;
 
 private:
     int m_teacher_id;

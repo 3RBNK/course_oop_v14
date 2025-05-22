@@ -25,6 +25,32 @@ QDateTime Lesson::time_slot() const {
     return m_time_slot;
 }
 
+QString Lesson::lesson_info() const {
+    QString info;
+
+    info += QString("Урок: %1\n").arg(m_subject);
+    info += QString("Дата и время: %1\n").arg(m_time_slot.toString("dd.MM.yyyy hh:mm"));
+    info += QString("Преподаватель: %1 (ID: %2, Предмет: %3)\n")
+            .arg(m_teacher.name())
+            .arg(m_teacher.teacher_id())
+            .arg(m_teacher.subject());
+
+    info += "Группы:\n";
+    for (const Group &group : m_groups) {
+        info += QString("  - %1 (ID: %2, Курс: %3)\n")
+                .arg(group.name())
+                .arg(group.group_id())
+                .arg(group.course());
+    }
+
+    info += QString("Аудитория: %1 (Вместимость: %2, Оборудование: %3)\n")
+            .arg(m_auditorium.room_id())
+            .arg(m_auditorium.capacity())
+            .arg(m_auditorium.equipment().join(", "));
+
+    return info;
+}
+
 Teacher Lesson::teacher() const {
     return m_teacher;
 }

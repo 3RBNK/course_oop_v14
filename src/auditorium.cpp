@@ -30,6 +30,13 @@ void Auditorium::set_equipment(const QStringList &equipment) {
     m_equipment = equipment;
 }
 
+QString Auditorium::auditorium_info() const {
+    return QString("Ауд. %1 (мест: %2, оборудование: %3)")
+            .arg(m_room_id)
+            .arg(m_capacity)
+            .arg(m_equipment.join(", "));
+}
+
 bool Auditorium::is_available(const QDateTime &dateTime) const {
     return !m_reserved_slots.contains(dateTime);
 }

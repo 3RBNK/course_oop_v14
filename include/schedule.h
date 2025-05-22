@@ -16,6 +16,9 @@ public:
     void remove_lesson(int lesson_id);
     bool check_conflicts() const;
 
+    void load_from_json(const QString &file_path, const User &user);
+
+
     QList<QSharedPointer<Lesson>> lessons() const;
 
 private:

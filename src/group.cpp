@@ -30,7 +30,4 @@ void Group::set_course(int course) {
     m_course = course;
 }
 
-//Lesson* Group::get_subject(const QDateTime &date) const {
-//    return nullptr;
-//}
 

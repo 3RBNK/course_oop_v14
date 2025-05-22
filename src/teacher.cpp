@@ -29,8 +29,11 @@ void Teacher::set_teacher_id(int id) {
 void Teacher::set_subject(const QString &subject) {
     m_subject = subject;
 }
-//
-//Lesson* Teacher::get_subject(const QDateTime &date) const {
-//    return nullptr;
-//}
+
+QString Teacher::teacher_info() const {
+    return QString("Ауд. %1 (мест: %2, оборудование: %3)")
+            .arg(m_teacher_id)
+            .arg(m_subject);
+}
+
 

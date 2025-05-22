@@ -8,7 +8,8 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-
+#include <QTableWidget>
+#include <QHeaderView>
 
 class UserInterface : public Interface {
 Q_OBJECT
@@ -17,12 +18,15 @@ public:
     explicit UserInterface(User *user, QWidget *parent = nullptr);
 
     void display() override;
+
 private:
     User *m_user;
     Schedule *m_schedule;
-    QWidget *userInfoWidget;
+    QWidget *user_info_widget;
+    QTableWidget *schedule_table;
 
-    void populateUserInfo();
+    void create_schedule_table();
+    void populate_user_info();
 };
 
 #endif //CODE_V1_USER_INTERFACE_H
