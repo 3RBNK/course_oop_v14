@@ -9,6 +9,7 @@
 
 #include "auth_system.h"
 #include "user_interface.h"
+#include "admin_interface.h"
 
 class AuthWindow : public QWidget {
 Q_OBJECT

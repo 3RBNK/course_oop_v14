@@ -7,6 +7,7 @@
 
 class Auditorium {
 public:
+    explicit Auditorium(const QString& auditorium_name);
     Auditorium();
     Auditorium(int roomId, int capacity, const QStringList &equipment);
 
@@ -30,6 +31,7 @@ public:
 private:
     int m_room_id;
     int m_capacity;
+    QString m_auditorium_name;
     QStringList m_equipment;
     QList<QDateTime> m_reserved_slots;
 };

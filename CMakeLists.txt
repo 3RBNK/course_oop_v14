@@ -35,7 +35,9 @@ add_executable(code_v1 src/main.cpp
         src/group.cpp
         src/teacher.cpp
         include/check_correct.h
-        src/check_correct.cpp)
+        src/check_correct.cpp
+        include/admin_interface.h
+        src/admin_interface.cpp)
 target_link_libraries(code_v1
         Qt::Core
         Qt::Gui

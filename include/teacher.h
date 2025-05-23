@@ -7,6 +7,8 @@
 
 class Teacher : public User {
 public:
+    explicit Teacher(const QString& teacher_name);
+
     Teacher();
     Teacher(int userId, const QString &name, const QString &role,
             const QString &login, const QString &password,
@@ -22,6 +24,7 @@ public:
 
 private:
     int m_teacher_id;
+    QString m_teacher_name;
     QString m_subject;
 };
 

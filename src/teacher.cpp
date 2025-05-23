@@ -1,5 +1,11 @@
 #include "../include/teacher.h"
 
+Teacher::Teacher(const QString& teacher_name)
+        : m_teacher_name(teacher_name)
+{
+}
+
+
 Teacher::Teacher()
         : User(), m_teacher_id(0), m_subject("")
 {

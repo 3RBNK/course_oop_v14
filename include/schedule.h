@@ -17,7 +17,7 @@ public:
     bool check_conflicts() const;
 
     void load_from_json(const QString &file_path, const User &user);
-
+    void save_to_json(const QString &filePath, const User &user);
 
     QList<QSharedPointer<Lesson>> lessons() const;
 

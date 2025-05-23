@@ -41,7 +41,12 @@ void AuthWindow::handleLogin() {
     if (user) {
         statusLabel->setText("Успешный вход!");
 
-        auto *ui = new UserInterface(user);
+        Interface *ui = user->role() == "admin" ?
+                        static_cast<Interface*>(new AdminInterface(user)) :
+                        static_cast<Interface*>(new UserInterface(user));
+
+        ui->display();
+
 
         ui->display();
 

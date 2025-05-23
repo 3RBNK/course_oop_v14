@@ -1,5 +1,11 @@
 #include "../include/auditorium.h"
 
+Auditorium::Auditorium(const QString& auditorium_name)
+        : m_auditorium_name(auditorium_name)
+{
+}
+
+
 Auditorium::Auditorium()
         : m_room_id(0), m_capacity(0) {}
 
