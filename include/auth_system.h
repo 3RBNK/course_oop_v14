@@ -7,7 +7,8 @@
 
 
 #include "user.h"
-
+#include "group.h"
+#include "teacher.h"
 
 class AdminInterface;
 
@@ -17,10 +18,13 @@ public:
     explicit AuthSystem(QObject *parent = nullptr);
     User* login(const QString &login, const QString &password);
     void add_user(User* user);
+    QList<User*> get_users() const;
 private:
     QList<User*> m_users;
 
-    void load_users_from_file(const QString &filePath);
+    void load_users_from_file(const QString &file_path);
+    void save_to_json(const QString& filename);
+
 
     friend class AdminInterface;
 };

@@ -21,10 +21,10 @@ private slots:
     void handleLogin();
 
 private:
-    QLineEdit *loginEdit;
-    QLineEdit *passwordEdit;
-    QLabel *statusLabel;
-    AuthSystem *authSystem;
+    QLineEdit *login_edit;
+    QLineEdit *password_edit;
+    QLabel *status_label;
+    AuthSystem *auth_system;
 
     void setupUI();
 };

@@ -9,8 +9,8 @@ Auditorium::Auditorium(const QString& auditorium_name)
 Auditorium::Auditorium()
         : m_room_id(0), m_capacity(0) {}
 
-Auditorium::Auditorium(int roomId, int capacity, const QStringList &equipment)
-        : m_room_id(roomId), m_capacity(capacity), m_equipment(equipment) {}
+Auditorium::Auditorium(int room_id, int capacity, const QStringList &equipment)
+        : m_room_id(room_id), m_capacity(capacity), m_equipment(equipment) {}
 
 int Auditorium::room_id() const {
     return m_room_id;

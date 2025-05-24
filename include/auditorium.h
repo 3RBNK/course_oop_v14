@@ -9,7 +9,7 @@ class Auditorium {
 public:
     explicit Auditorium(const QString& auditorium_name);
     Auditorium();
-    Auditorium(int roomId, int capacity, const QStringList &equipment);
+    Auditorium(int room_id, int capacity, const QStringList &equipment);
 
     int room_id() const;
     void set_room_id(int id);

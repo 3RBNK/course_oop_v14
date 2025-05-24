@@ -27,6 +27,7 @@ private slots:
     void refresh_users_table();
     void refresh_schedule_table();
     void on_user_selected();
+    void save_users_to_json();
 
 private:
     User *m_admin;
@@ -40,6 +41,9 @@ private:
     QLineEdit *login_edit;
     QLineEdit *password_edit;
     QComboBox *role_combo;
+    QLineEdit *group_id_edit;
+    QLineEdit *course_edit;
+    QLineEdit *subjects_edit;
 
     QWidget *schedule_tab;
     QTableWidget *schedule_table;
@@ -54,6 +58,11 @@ private:
     void setup_users_tab();
     void setup_schedule_tab();
     void populate_role_combo();
+    void populate_user_combo();
+    void clear_form();
+
+    int generate_unique_user_id();
+    int generate_unique_teacher_id();
 
     ~AdminInterface();
 };

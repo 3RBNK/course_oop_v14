@@ -7,39 +7,43 @@ Teacher::Teacher(const QString& teacher_name)
 
 
 Teacher::Teacher()
-        : User(), m_teacher_id(0), m_subject("")
+        : User(), m_teacher_id(0), m_subjects("")
 {
 }
 
-Teacher::Teacher(int userId, const QString &name, const QString &role,
+Teacher::Teacher(int user_id, const QString &name, const QString &role,
                  const QString &login, const QString &password,
-                 int teacherId, const QString &subject)
-        : User(userId, name, role, login, password),
+                 int teacherId, const QStringList &subjects)
+        : User(user_id, name, role, login, password),
           m_teacher_id(teacherId),
-          m_subject(subject)
+          m_subjects(subjects)
 {
 }
+
 
 int Teacher::teacher_id() const {
     return m_teacher_id;
 }
 
-QString Teacher::subject() const {
-    return m_subject;
+QStringList Teacher::subjects() const {
+    return m_subjects;
 }
 
-void Teacher::set_teacher_id(int id) {
-    m_teacher_id = id;
+void Teacher::set_subjects(const QStringList &subjects) {
+    m_subjects = subjects;
 }
 
-void Teacher::set_subject(const QString &subject) {
-    m_subject = subject;
+void Teacher::add_subject(const QString &subject) {
+    if (!m_subjects.contains(subject)) {
+        m_subjects.append(subject);
+    }
 }
 
 QString Teacher::teacher_info() const {
-    return QString("Ауд. %1 (мест: %2, оборудование: %3)")
-            .arg(m_teacher_id)
-            .arg(m_subject);
+    return QString("%1\nПредметы: %2")
+            .arg(name())
+            .arg(m_subjects.join(", "));
 }
+
 
 

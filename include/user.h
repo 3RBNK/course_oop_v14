@@ -6,8 +6,9 @@
 class User {
 public:
     User();
-    User(int userId, const QString &name, const QString &role,
+    User(int user_id, const QString &name, const QString &role,
          const QString &login, const QString &password);
+    virtual ~User() = default;
 
     int user_id() const;
     QString name() const;

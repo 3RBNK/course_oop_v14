@@ -1,26 +1,19 @@
 #include "../include/admin_interface.h"
 #include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QHeaderView>
+#include <QLabel>
 #include <QMessageBox>
 #include <QDateTime>
+#include <QInputDialog>
+#include <QHeaderView>
 
 AdminInterface::AdminInterface(User *admin, QWidget *parent)
         : Interface(parent), m_admin(admin) {
-    if (!admin || admin->role() != "admin") {
-        QMessageBox::critical(this, "Ошибка", "Недопустимый пользователь-администратор");
-        throw std::invalid_argument("Invalid admin user");
-    }
-    m_auth_system = new AuthSystem(this);
-    m_schedule = new Schedule(this);
+    m_auth_system = new AuthSystem();
+    m_schedule = new Schedule();
     setup_ui();
     refresh_users_table();
+    populate_user_combo();
     refresh_schedule_table();
-}
-
-AdminInterface::~AdminInterface() {
-    delete m_auth_system;
-    delete m_schedule;
 }
 
 void AdminInterface::setup_ui() {
@@ -59,21 +52,27 @@ void AdminInterface::setup_users_tab() {
     role_combo = new QComboBox();
     populate_role_combo();
 
+    auto *buttons_layout = new QHBoxLayout();
     auto *add_btn = new QPushButton("Добавить пользователя");
     auto *delete_btn = new QPushButton("Удалить пользователя");
+    auto *save_btn = new QPushButton("Сохранить изменения");
 
     form_layout->addWidget(name_edit);
     form_layout->addWidget(login_edit);
     form_layout->addWidget(password_edit);
     form_layout->addWidget(role_combo);
-    form_layout->addWidget(add_btn);
-    form_layout->addWidget(delete_btn);
+
+    buttons_layout->addWidget(add_btn);
+    buttons_layout->addWidget(delete_btn);
+    buttons_layout->addWidget(save_btn);
 
     layout->addWidget(users_table);
     layout->addLayout(form_layout);
+    layout->addLayout(buttons_layout);
 
     connect(add_btn, &QPushButton::clicked, this, &AdminInterface::add_user);
     connect(delete_btn, &QPushButton::clicked, this, &AdminInterface::delete_user);
+    connect(save_btn, &QPushButton::clicked, this, &AdminInterface::save_users_to_json);
 }
 
 void AdminInterface::setup_schedule_tab() {
@@ -81,7 +80,7 @@ void AdminInterface::setup_schedule_tab() {
 
     schedule_table = new QTableWidget(6, 6);
     QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
-    QStringList times = {"8:15-9:50", "10:00-11:35", "11:45-13:20",
+    QStringList times = {"08:15-09:50", "10:00-11:35", "11:45-13:20",
                          "14:20-15:55", "16:05-17:40", "17:50-19:25"};
     schedule_table->setHorizontalHeaderLabels(days);
     schedule_table->setVerticalHeaderLabels(times);
@@ -101,7 +100,6 @@ void AdminInterface::setup_schedule_tab() {
 
     auto *add_lesson_btn = new QPushButton("Добавить занятие");
     auto *delete_lesson_btn = new QPushButton("Удалить занятие");
-
     form_layout->addWidget(user_combo);
     form_layout->addWidget(subject_edit);
     form_layout->addWidget(day_combo);
@@ -116,12 +114,9 @@ void AdminInterface::setup_schedule_tab() {
 
     connect(add_lesson_btn, &QPushButton::clicked, this, &AdminInterface::add_lesson);
     connect(delete_lesson_btn, &QPushButton::clicked, this, &AdminInterface::delete_lesson);
-    connect(user_combo, &QComboBox::currentTextChanged, this, &AdminInterface::on_user_selected);
+    connect(user_combo, &QComboBox::currentTextChanged, this, &AdminInterface::refresh_schedule_table);
 }
 
-void AdminInterface::populate_role_combo() {
-    role_combo->addItems({"student", "teacher", "admin"});
-}
 
 void AdminInterface::add_user() {
     QString name = name_edit->text();
@@ -130,22 +125,65 @@ void AdminInterface::add_user() {
     QString role = role_combo->currentText();
 
     if (name.isEmpty() || login.isEmpty() || password.isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Все поля должны быть заполнены");
+        QMessageBox::warning(this, "Ошибка", "Заполните все обязательные поля");
         return;
     }
 
-    int id;
-    if (role == "admin") {
-        id = 2000 + m_auth_system->m_users.size();
+    int user_id = generate_unique_user_id();
+
+    if (role == "student") {
+        bool ok;
+        int group_id = QInputDialog::getInt(this, "Группа студента",
+                                            "Введите ID группы:", 1, 1, 999999, 1, &ok);
+        if (!ok) {
+            QMessageBox::warning(this, "Ошибка", "Необходимо указать ID группы");
+            return;
+        }
+
+        int course = QInputDialog::getInt(this, "Курс студента",
+                                          "Введите номер курса:", 1, 1, 6, 1, &ok);
+        if (!ok) {
+            QMessageBox::warning(this, "Ошибка", "Необходимо указать курс");
+            return;
+        }
+
+        auto *group = new Group(user_id, name, role, login, password, group_id, course);
+        m_auth_system->add_user(group);
     } else if (role == "teacher") {
-        id = 1000 + m_auth_system->m_users.size();
+        bool ok;
+        int teacher_id = QInputDialog::getInt(this, "ID преподавателя",
+                                              "Введите ID преподавателя:", 1, 1, 999999, 1, &ok);
+        if (!ok) {
+            QMessageBox::warning(this, "Ошибка", "Необходимо указать ID преподавателя");
+            return;
+        }
+
+        QStringList subjects;
+        while (true) {
+            QString subject = QInputDialog::getText(this, "Предмет преподавателя",
+                                                    "Введите название предмета (или оставьте пустым для завершения):",
+                                                    QLineEdit::Normal, "", &ok);
+
+            if (!ok || subject.isEmpty()) {
+                break;
+            }
+            subjects.append(subject);
+        }
+
+        if (subjects.isEmpty()) {
+            QMessageBox::warning(this, "Ошибка", "Необходимо указать хотя бы один предмет");
+            return;
+        }
+
+        auto *teacher = new Teacher(user_id, name, role, login, password, teacher_id, subjects);
+        m_auth_system->add_user(teacher);
     } else {
-        id = m_auth_system->m_users.size();
+        auto *admin = new User(user_id, name, role, login, password);
+        m_auth_system->add_user(admin);
     }
 
-    auto *new_user = new User(id, name, role, login, password);
-    m_auth_system->add_user(new_user);
     refresh_users_table();
+    populate_user_combo();
 
     name_edit->clear();
     login_edit->clear();
@@ -161,7 +199,6 @@ void AdminInterface::delete_user() {
 
     int row = selected_items[0]->row();
     int user_id = users_table->item(row, 0)->text().toInt();
-
     for (int i = 0; i < m_auth_system->m_users.size(); ++i) {
         if (m_auth_system->m_users[i]->user_id() == user_id) {
             delete m_auth_system->m_users[i];
@@ -171,6 +208,7 @@ void AdminInterface::delete_user() {
     }
 
     refresh_users_table();
+    populate_user_combo();
 }
 
 void AdminInterface::add_lesson() {
@@ -204,14 +242,16 @@ void AdminInterface::add_lesson() {
 
     int day_index = day_combo->currentIndex() + 1;
     QString time_str = time_combo->currentText();
-    QStringList time_parts = time_str.split("-")[0].split(":");
+    QString time_parts = time_str.split("-")[0];
+
+    qDebug() << "Time: " << time_parts;
 
     QDate current_date = QDate::currentDate();
     while (current_date.dayOfWeek() != day_index) {
         current_date = current_date.addDays(1);
     }
 
-    QTime lesson_time = QTime::fromString(time_parts[0], "HH:mm");
+    QTime lesson_time = QTime::fromString(time_parts, "HH:mm");
     if (!lesson_time.isValid()) {
         QMessageBox::warning(this, "Ошибка", "Неверный формат времени");
         return;
@@ -234,7 +274,7 @@ void AdminInterface::add_lesson() {
             0,
             subject,
             teacher,
-            QList < Group > (),
+            QList<Group>(),
             lesson_datetime,
             auditorium
     );
@@ -284,8 +324,7 @@ void AdminInterface::delete_lesson() {
     int day_of_week = column + 1;
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
-
-    QList < QSharedPointer < Lesson >> lessons = m_schedule->lessons();
+    QList<QSharedPointer<Lesson >> lessons = m_schedule->lessons();
     for (int i = 0; i < lessons.size(); ++i) {
         const auto &lesson = lessons[i];
         if (lesson->time_slot().time() == lesson_time &&
@@ -301,14 +340,27 @@ void AdminInterface::delete_lesson() {
 
 void AdminInterface::refresh_users_table() {
     users_table->setRowCount(0);
-    for (const auto *user: m_auth_system->m_users) {
-        int row = users_table->rowCount();
+    int row = 0;
+
+    for (const auto *user: m_auth_system->get_users()) {
         users_table->insertRow(row);
+
         users_table->setItem(row, 0, new QTableWidgetItem(QString::number(user->user_id())));
         users_table->setItem(row, 1, new QTableWidgetItem(user->name()));
         users_table->setItem(row, 2, new QTableWidgetItem(user->role()));
         users_table->setItem(row, 3, new QTableWidgetItem(user->login()));
         users_table->setItem(row, 4, new QTableWidgetItem(user->password()));
+
+        if (const auto *group = dynamic_cast<const Group *>(user)) {
+            users_table->setItem(row, 5, new QTableWidgetItem(QString::number(group->group_id())));
+            users_table->setItem(row, 6, new QTableWidgetItem(QString::number(group->course())));
+        }
+
+        if (const auto *teacher = dynamic_cast<const Teacher *>(user)) {
+            users_table->setItem(row, 7, new QTableWidgetItem(teacher->subjects().join(", ")));
+        }
+
+        row++;
     }
 }
 
@@ -365,8 +417,68 @@ void AdminInterface::refresh_schedule_table() {
     }
 }
 
+int AdminInterface::generate_unique_user_id() {
+    int max_id = 0;
+    for (const auto *user: m_auth_system->get_users()) {
+        if (user->user_id() > max_id) {
+            max_id = user->user_id();
+        }
+    }
+    return max_id + 1;
+}
+
+int AdminInterface::generate_unique_teacher_id() {
+    int max_id = 1000;
+    for (const auto *user: m_auth_system->get_users()) {
+        if (const auto *teacher = dynamic_cast<const Teacher *>(user)) {
+            if (teacher->teacher_id() > max_id) {
+                max_id = teacher->teacher_id();
+            }
+        }
+    }
+    return max_id + 1;
+}
+
+void AdminInterface::populate_role_combo() {
+    role_combo->clear();
+    role_combo->addItems({"student", "teacher", "admin"});
+}
+
+void AdminInterface::populate_user_combo() {
+    user_combo->clear();
+    for (const auto *user: m_auth_system->m_users) {
+        if (user->role() == "student" || user->role() == "teacher") {
+            user_combo->addItem(user->name());
+        }
+    }
+}
+
 void AdminInterface::on_user_selected() {
     refresh_schedule_table();
+}
+
+void AdminInterface::save_users_to_json() {
+    try {
+        m_auth_system->save_to_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json");
+        QMessageBox::information(this, "Успех", "Пользователи успешно сохранены в файл");
+    } catch (const std::exception &e) {
+        QMessageBox::critical(this, "Ошибка", QString("Не удалось сохранить пользователей: %1").arg(e.what()));
+    }
+}
+
+void AdminInterface::clear_form() {
+    name_edit->clear();
+    login_edit->clear();
+    password_edit->clear();
+    role_combo->setCurrentIndex(0);
+    group_id_edit->clear();
+    course_edit->clear();
+    subjects_edit->clear();
+}
+
+AdminInterface::~AdminInterface() {
+    delete m_auth_system;
+    delete m_schedule;
 }
 
 void AdminInterface::display() {

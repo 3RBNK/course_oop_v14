@@ -5,10 +5,10 @@ Group::Group()
 {
 }
 
-Group::Group(int userId, const QString &name, const QString &role,
+Group::Group(int user_id, const QString &name, const QString &role,
              const QString &login, const QString &password,
              int groupId, int course)
-        : User(userId, name, role, login, password),
+        : User(user_id, name, role, login, password),
           m_group_id(groupId),
           m_course(course)
 {

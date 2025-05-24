@@ -7,7 +7,7 @@
 class Group : public User {
 public:
     Group();
-    Group(int userId, const QString &name, const QString &role,
+    Group(int user_id, const QString &name, const QString &role,
           const QString &login, const QString &password,
           int groupId, int course);
 

@@ -33,7 +33,7 @@ QString Lesson::lesson_info() const {
     info += QString("Преподаватель: %1 (ID: %2, Предмет: %3)\n")
             .arg(m_teacher.name())
             .arg(m_teacher.teacher_id())
-            .arg(m_teacher.subject());
+            .arg(m_teacher.subjects().join(", "));;
 
     info += "Группы:\n";
     for (const Group &group : m_groups) {

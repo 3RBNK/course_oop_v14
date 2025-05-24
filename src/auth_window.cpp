@@ -1,7 +1,7 @@
 #include "../include/auth_window.h"
 
 AuthWindow::AuthWindow(QWidget *parent)
-        : QWidget(parent), authSystem(new AuthSystem(this))
+        : QWidget(parent), auth_system(new AuthSystem(this))
 {
     setupUI();
 }
@@ -10,21 +10,21 @@ void AuthWindow::setupUI() {
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     QLabel *loginLabel = new QLabel("Логин:");
-    loginEdit = new QLineEdit();
+    login_edit = new QLineEdit();
 
     QLabel *passwordLabel = new QLabel("Пароль:");
-    passwordEdit = new QLineEdit();
-    passwordEdit->setEchoMode(QLineEdit::Password);
+    password_edit = new QLineEdit();
+    password_edit->setEchoMode(QLineEdit::Password);
 
     QPushButton *loginButton = new QPushButton("Войти");
-    statusLabel = new QLabel();
+    status_label = new QLabel();
 
     layout->addWidget(loginLabel);
-    layout->addWidget(loginEdit);
+    layout->addWidget(login_edit);
     layout->addWidget(passwordLabel);
-    layout->addWidget(passwordEdit);
+    layout->addWidget(password_edit);
     layout->addWidget(loginButton);
-    layout->addWidget(statusLabel);
+    layout->addWidget(status_label);
 
     connect(loginButton, &QPushButton::clicked, this, &AuthWindow::handleLogin);
 
@@ -34,12 +34,12 @@ void AuthWindow::setupUI() {
 }
 
 void AuthWindow::handleLogin() {
-    QString login = loginEdit->text();
-    QString password = passwordEdit->text();
+    QString login = login_edit->text();
+    QString password = password_edit->text();
 
-    User *user = authSystem->login(login, password);
+    User *user = auth_system->login(login, password);
     if (user) {
-        statusLabel->setText("Успешный вход!");
+        status_label->setText("Успешный вход!");
 
         Interface *ui = user->role() == "admin" ?
                         static_cast<Interface*>(new AdminInterface(user)) :
@@ -52,6 +52,6 @@ void AuthWindow::handleLogin() {
 
         close();
     } else {
-        statusLabel->setText("Неверный логин или пароль");
+        status_label->setText("Неверный логин или пароль");
     }
 }

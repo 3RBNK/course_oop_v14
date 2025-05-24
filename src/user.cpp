@@ -11,9 +11,9 @@ User::User()
 {
 }
 
-User::User(int userId, const QString &name, const QString &role,
+User::User(int user_id, const QString &name, const QString &role,
            const QString &login, const QString &password)
-        : m_user_id(userId),
+        : m_user_id(user_id),
           m_name(name),
           m_role(role),
           m_login(login),
