@@ -51,14 +51,23 @@ private:
 
     QWidget *schedule_tab_for_group;
     QWidget *schedule_tab_for_teacher;
+
     QComboBox *user_combo_group;
     QComboBox *user_combo_teacher;
-    QTableWidget *schedule_table;
-    QLineEdit *subject_edit;
-    QComboBox *day_combo;
-    QComboBox *time_combo;
-    QLineEdit *auditorium_edit;
-    QLineEdit *teacher_edit;
+
+    QTableWidget *schedule_table_group;
+    QLineEdit *subject_edit_group;
+    QComboBox *day_combo_group;
+    QComboBox *time_combo_group;
+    QLineEdit *auditorium_edit_group;
+    QLineEdit *teacher_edit_group;
+
+    QTableWidget *schedule_table_teacher;
+    QLineEdit *subject_edit_teacher;
+    QComboBox *day_combo_teacher;
+    QComboBox *time_combo_teacher;
+    QLineEdit *auditorium_edit_teacher;
+    QLineEdit *group_edit_teacher;
 
     void setup_ui();
     void setup_users_tab();

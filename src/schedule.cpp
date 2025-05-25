@@ -66,7 +66,7 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
 
                     Auditorium auditorium(
                         lessonObj.value("auditorium_id").toInt(),
-                        lessonObj.value("name").toString(),
+                        lessonObj.value("auditorium_name").toString(),
                         lessonObj.value("auditorium_capacity").toInt()
                     );
 
@@ -98,7 +98,7 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
 
                     Auditorium auditorium(
                         lessonObj.value("auditorium_id").toInt(),
-                        lessonObj.value("name").toString(),
+                        lessonObj.value("auditorium_name").toString(),
                         lessonObj.value("auditorium_capacity").toInt()
                     );
 

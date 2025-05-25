@@ -11,9 +11,12 @@ AdminInterface::AdminInterface(User *admin, QWidget *parent)
         : Interface(parent), m_admin(admin) {
     m_auth_system = new AuthSystem();
     m_schedule = new Schedule();
+
     setup_ui();
+
     refresh_users_table();
     populate_user_combo();
+
     refresh_schedule_table();
 }
 
@@ -85,40 +88,44 @@ void AdminInterface::setup_users_tab() {
 void AdminInterface::setup_schedule_tab_for_group() {
     auto *layout = new QVBoxLayout(schedule_tab_for_group);
 
-    schedule_table = new QTableWidget(6, 6);
-    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
+    schedule_table_group = new QTableWidget(6, 7);
+    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресение"};
     QStringList times = {"08:15-09:50", "10:00-11:35", "11:45-13:20",
                          "14:20-15:55", "16:05-17:40", "17:50-19:25"};
-    user_combo_group = new QComboBox(); // Combo для группы
 
-    subject_edit = new QLineEdit();
-    subject_edit->setPlaceholderText("Предмет");
+    schedule_table_group->setHorizontalHeaderLabels(days);
+    schedule_table_group->setVerticalHeaderLabels(times);
 
-    day_combo = new QComboBox();
-    day_combo->addItems(days);
+    user_combo_group = new QComboBox();
 
-    time_combo = new QComboBox();
-    time_combo->addItems(times);
+    subject_edit_group = new QLineEdit();
+    subject_edit_group->setPlaceholderText("Предмет");
 
-    auditorium_edit = new QLineEdit();
-    auditorium_edit->setPlaceholderText("Аудитория");
+    day_combo_group = new QComboBox();
+    day_combo_group->addItems(days);
 
-    teacher_edit = new QLineEdit();
-    teacher_edit->setPlaceholderText("Преподаватель");
+    time_combo_group = new QComboBox();
+    time_combo_group->addItems(times);
+
+    auditorium_edit_group = new QLineEdit();
+    auditorium_edit_group->setPlaceholderText("Аудитория");
+
+    teacher_edit_group = new QLineEdit();
+    teacher_edit_group->setPlaceholderText("Преподаватель");
 
     auto *form_layout = new QHBoxLayout();
     auto *add_lesson_btn = new QPushButton("Добавить занятие");
     auto *delete_lesson_btn = new QPushButton("Удалить занятие");
     form_layout->addWidget(user_combo_group);
-    form_layout->addWidget(subject_edit);
-    form_layout->addWidget(day_combo);
-    form_layout->addWidget(time_combo);
-    form_layout->addWidget(auditorium_edit);
-    form_layout->addWidget(teacher_edit);
+    form_layout->addWidget(subject_edit_group);
+    form_layout->addWidget(day_combo_group);
+    form_layout->addWidget(time_combo_group);
+    form_layout->addWidget(auditorium_edit_group);
+    form_layout->addWidget(teacher_edit_group);
     form_layout->addWidget(add_lesson_btn);
     form_layout->addWidget(delete_lesson_btn);
 
-    layout->addWidget(schedule_table);
+    layout->addWidget(schedule_table_group);
     layout->addLayout(form_layout);
 
     connect(add_lesson_btn, &QPushButton::clicked, this, &AdminInterface::add_lesson);
@@ -129,40 +136,43 @@ void AdminInterface::setup_schedule_tab_for_group() {
 void AdminInterface::setup_schedule_tab_for_teacher() {
     auto *layout = new QVBoxLayout(schedule_tab_for_teacher);
 
-    schedule_table = new QTableWidget(6, 6);
-    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
+    schedule_table_teacher = new QTableWidget(6, 7);
+    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресение"};
     QStringList times = {"08:15-09:50", "10:00-11:35", "11:45-13:20",
                          "14:20-15:55", "16:05-17:40", "17:50-19:25"};
-    user_combo_teacher = new QComboBox(); // Combo для преподавателей
+    schedule_table_teacher->setHorizontalHeaderLabels(days);
+    schedule_table_teacher->setVerticalHeaderLabels(times);
 
-    subject_edit = new QLineEdit();
-    subject_edit->setPlaceholderText("Предмет");
+    user_combo_teacher = new QComboBox();
 
-    day_combo = new QComboBox();
-    day_combo->addItems(days);
+    subject_edit_teacher = new QLineEdit();
+    subject_edit_teacher->setPlaceholderText("Предмет");
 
-    time_combo = new QComboBox();
-    time_combo->addItems(times);
+    day_combo_teacher = new QComboBox();
+    day_combo_teacher->addItems(days);
 
-    auditorium_edit = new QLineEdit();
-    auditorium_edit->setPlaceholderText("Аудитория");
+    time_combo_teacher = new QComboBox();
+    time_combo_teacher->addItems(times);
 
-    teacher_edit = new QLineEdit();
-    teacher_edit->setPlaceholderText("Группа");
+    auditorium_edit_teacher = new QLineEdit();
+    auditorium_edit_teacher->setPlaceholderText("Аудитория");
+
+    group_edit_teacher = new QLineEdit();
+    group_edit_teacher->setPlaceholderText("Группа");
 
     auto *form_layout = new QHBoxLayout();
     auto *add_lesson_btn = new QPushButton("Добавить занятие");
     auto *delete_lesson_btn = new QPushButton("Удалить занятие");
     form_layout->addWidget(user_combo_teacher);
-    form_layout->addWidget(subject_edit);
-    form_layout->addWidget(day_combo);
-    form_layout->addWidget(time_combo);
-    form_layout->addWidget(auditorium_edit);
-    form_layout->addWidget(teacher_edit);
+    form_layout->addWidget(subject_edit_teacher);
+    form_layout->addWidget(day_combo_teacher);
+    form_layout->addWidget(time_combo_teacher);
+    form_layout->addWidget(auditorium_edit_teacher);
+    form_layout->addWidget(group_edit_teacher);
     form_layout->addWidget(add_lesson_btn);
     form_layout->addWidget(delete_lesson_btn);
 
-    layout->addWidget(schedule_table);
+    layout->addWidget(schedule_table_teacher);
     layout->addLayout(form_layout);
 
     connect(add_lesson_btn, &QPushButton::clicked, this, &AdminInterface::add_lesson);
@@ -171,7 +181,6 @@ void AdminInterface::setup_schedule_tab_for_teacher() {
 }
 
 void AdminInterface::populate_user_combo() {
-
     user_combo_group->clear();
     user_combo_teacher->clear();
 
@@ -185,17 +194,28 @@ void AdminInterface::populate_user_combo() {
 }
 
 void AdminInterface::refresh_schedule_table() {
-    for (int i = 0; i < schedule_table->rowCount(); ++i) {
-        for (int j = 0; j < schedule_table->columnCount(); ++j) {
-            QTableWidgetItem *item = schedule_table->item(i, j);
-            if (item) {
-                delete item;
+    int current_tab_index = tab_widget->currentIndex();
+    if (current_tab_index == tab_widget->indexOf(schedule_tab_for_group)) {
+        for (int i = 0; i < schedule_table_group->rowCount(); ++i) {
+            for (int j = 0; j < schedule_table_group->columnCount(); ++j) {
+                if (schedule_table_group->item(i, j)) {
+                    delete schedule_table_group->item(i, j);
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < schedule_table_teacher->rowCount(); ++i) {
+            for (int j = 0; j < schedule_table_teacher->columnCount(); ++j) {
+                if (schedule_table_teacher->item(i, j)) {
+                    delete schedule_table_teacher->item(i, j);
+                }
             }
         }
     }
 
+
+
     QString selected_user_name;
-    int current_tab_index = tab_widget->currentIndex();
     if (current_tab_index == tab_widget->indexOf(schedule_tab_for_group)) {
         selected_user_name = user_combo_group->currentText();
     } else if (current_tab_index == tab_widget->indexOf(schedule_tab_for_teacher)) {
@@ -220,16 +240,19 @@ void AdminInterface::refresh_schedule_table() {
         return;
     }
 
-    m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
 
+    m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
     for (const auto &lesson : m_schedule->lessons()) {
+
         QDateTime time_slot = lesson->time_slot();
         int day = time_slot.date().dayOfWeek();
-        int column = day - 1;
+        int column = day%7;
 
         QTime lesson_time = time_slot.time();
+
+        qDebug() << "lesson time " << lesson_time;
         int row = -1;
-        if (lesson_time >= QTime(8, 15) && lesson_time <= QTime(9, 50)) row = 0;
+        if      (lesson_time >= QTime(8, 15) && lesson_time <= QTime(9, 50)) row = 0;
         else if (lesson_time >= QTime(10, 0) && lesson_time <= QTime(11, 35)) row = 1;
         else if (lesson_time >= QTime(11, 45) && lesson_time <= QTime(13, 20)) row = 2;
         else if (lesson_time >= QTime(14, 20) && lesson_time <= QTime(15, 55)) row = 3;
@@ -238,10 +261,16 @@ void AdminInterface::refresh_schedule_table() {
 
         if (row == -1) continue;
 
+        qDebug() << "row " << row << " column " << column;
+
         QString text = lesson->subject() + "\n" + lesson->auditorium().auditorium_info();
         auto *item = new QTableWidgetItem(text);
         item->setTextAlignment(Qt::AlignCenter);
-        schedule_table->setItem(row, column, item);
+        if (current_tab_index == tab_widget->indexOf(schedule_tab_for_group)) {
+            schedule_table_group->setItem(row, column, item);
+        } else {
+            schedule_table_teacher->setItem(row, column, item);
+        }
     }
 }
 void AdminInterface::add_user() {
@@ -374,15 +403,12 @@ void AdminInterface::add_lesson() {
         return;
     }
 
-
     QString selected_user_name = active_user_combo->currentText();
-
 
     if (selected_user_name.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Выберите пользователя!");
         return;
     }
-
 
     User* selected_user = nullptr;
     for (auto* user : m_auth_system->m_users) {
@@ -397,22 +423,46 @@ void AdminInterface::add_lesson() {
         return;
     }
 
+    qDebug() << "selected user: " << selected_user->name();
 
-    QString subject = subject_edit->text();
-    QString auditorium_name = auditorium_edit->text();
-    QString teacher_name = teacher_edit->text();
+    QString subject;
+    QString auditorium_name;
+    QString teacher_or_group_name;
+
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        subject = subject_edit_group->text();
+        auditorium_name = auditorium_edit_group->text();
+        teacher_or_group_name = teacher_edit_group->text();
+    } else {
+        subject = subject_edit_teacher->text();
+        auditorium_name = auditorium_edit_teacher->text();
+        teacher_or_group_name = group_edit_teacher->text();
+    }
 
 
-    if (subject.isEmpty() || auditorium_name.isEmpty() || teacher_name.isEmpty()) {
+    qDebug() << "Read value: ";
+    qDebug() << "subject " << subject << " auditorium " << auditorium_name << " teacher " << teacher_or_group_name;
+
+    if (subject.isEmpty() || auditorium_name.isEmpty() || teacher_or_group_name.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Все поля должны быть заполнены!");
         return;
     }
 
+    int day_index;
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        day_index = day_combo_group->currentIndex();
+    } else {
+        day_index = day_combo_teacher->currentIndex();
+    }
 
-    int day_index = day_combo->currentIndex();
+    qDebug() << "day index " << day_index;
 
-
-    QString time_slot_str = time_combo->currentText();
+    QString time_slot_str;
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        time_slot_str = time_combo_group->currentText();
+    } else {
+        time_slot_str = time_combo_teacher->currentText();
+    }
     QString start_time_str = time_slot_str.split('-').first();
     QTime lesson_time = QTime::fromString(start_time_str, "HH:mm");
 
@@ -428,9 +478,10 @@ void AdminInterface::add_lesson() {
 
     QDateTime lesson_datetime(lesson_date, lesson_time);
 
+    qDebug() << "lesson date " << lesson_date << " lesson time " << lesson_time;
 
     Auditorium auditorium(auditorium_name);
-    Teacher teacher(teacher_name);
+    Teacher teacher(teacher_or_group_name);
 
 
     QList<QSharedPointer<Lesson>> current_lessons = m_schedule->lessons();
@@ -442,27 +493,28 @@ void AdminInterface::add_lesson() {
         }
     }
 
-
     auto new_lesson = QSharedPointer<Lesson>::create(0, subject, teacher, QList<Group>(), lesson_datetime, auditorium);
-
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
     m_schedule->add_lesson(new_lesson);
     m_schedule->save_to_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
 
-
     refresh_schedule_table();
 
-
-    subject_edit->clear();
-    auditorium_edit->clear();
-    teacher_edit->clear();
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        subject_edit_group->clear();
+        auditorium_edit_group->clear();
+        teacher_edit_group->clear();
+    } else {
+        subject_edit_teacher->clear();
+        auditorium_edit_teacher->clear();
+        group_edit_teacher->clear();
+    }
 
     QMessageBox::information(this, "Успех", "Занятие успешно добавлено!");
 }
 
 void AdminInterface::delete_lesson() {
-
     QComboBox *active_user_combo = nullptr;
     if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
         active_user_combo = user_combo_group;
@@ -492,7 +544,13 @@ void AdminInterface::delete_lesson() {
         return;
     }
 
-    auto selected_items = schedule_table->selectedItems();
+    QList<QTableWidgetItem*> selected_items;
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        selected_items  = schedule_table_group->selectedItems();
+    } else {
+        selected_items  = schedule_table_teacher->selectedItems();
+    }
+
     if (selected_items.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Выберите занятие для удаления!");
         return;
@@ -508,14 +566,20 @@ void AdminInterface::delete_lesson() {
     }
 
     QTime lesson_time = QTime::fromString(times[row], "HH:mm");
-    int day_of_week = column + 1;
+    int day_of_week = column;
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
     QList<QSharedPointer<Lesson>> lessons = m_schedule->lessons();
 
+    qDebug() << "Lesson empty: " << lessons.isEmpty();
+    qDebug() << "Lesson size: " << lesson_time;
+    qDebug() << "Day of week: " << day_of_week;
     for (const auto &lesson : lessons) {
+        qDebug() << "Lesson time: " << lesson->time_slot().time() << " day " << lesson->time_slot().date().dayOfWeek();
+        qDebug() << " ";
         if (lesson->time_slot().time() == lesson_time &&
             lesson->time_slot().date().dayOfWeek() == day_of_week) {
+            qDebug() << "Correct";
             m_schedule->remove_lesson(lesson->lesson_id());
             break;
         }
