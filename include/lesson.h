@@ -1,5 +1,5 @@
-#ifndef CODE_V1_LESSON_H
-#define CODE_V1_LESSON_H
+#ifndef COURSE_LESSON_H
+#define COURSE_LESSON_H
 
 #include <QDateTime>
 #include <QString>
@@ -29,7 +29,7 @@ public:
     QList<Group> groups() const;
     Auditorium auditorium() const;
 
-    bool conflict_with(const Lesson &other) const;
+    bool operator==(const Lesson &other) const;
 
 private:
     int m_lesson_id;
@@ -40,4 +40,4 @@ private:
     Auditorium m_auditorium;
 };
 
-#endif // CODE_V1_LESSON_H
+#endif // COURSE_LESSON_H

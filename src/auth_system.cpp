@@ -9,7 +9,7 @@ AuthSystem::AuthSystem(QObject *parent) : QObject(parent) {
     try {
         load_users_from_file("D:\\home_work\\oop\\course\\code_v1\\users\\users.json");
     } catch (const std::exception& e) {
-        qDebug() << "Ошибка загрузки пользователей:" << e.what();
+        qDebug() << "Error load users:" << e.what();
     }
 }
 
@@ -28,18 +28,16 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
     }
 
     QJsonObject mainObj = doc.object();
-    
-    // Очищаем текущий список пользователей
+
     qDeleteAll(m_users);
     m_users.clear();
 
-    // Загружаем администраторов
     if (mainObj.contains("Администраторы")) {
         QJsonArray admins = mainObj["Администраторы"].toArray();
         for (const auto& adminRef : admins) {
             QJsonObject admin = adminRef.toObject();
             auto* newAdmin = new User(
-                admin["user_id"].toInt(),
+                admin["id"].toInt(),
                 admin["name"].toString(),
                 admin["role"].toString(),
                 admin["login"].toString(),
@@ -49,13 +47,12 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
         }
     }
 
-    // Загружаем преподавателей
+
     if (mainObj.contains("Преподаватели")) {
         QJsonArray teachers = mainObj["Преподаватели"].toArray();
         for (const auto& teacherRef : teachers) {
             QJsonObject teacher = teacherRef.toObject();
-            
-            // Собираем список предметов
+
             QStringList subjects;
             if (teacher.contains("subjects")) {
                 for (const auto& subject : teacher["subjects"].toArray()) {
@@ -64,66 +61,64 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
             }
 
             auto* newTeacher = new Teacher(
-                teacher["user_id"].toInt(),
+                teacher["id"].toInt(),
                 teacher["name"].toString(),
                 teacher["role"].toString(),
                 teacher["login"].toString(),
                 teacher["password"].toString(),
-                teacher["teacher_id"].toInt(),
                 subjects
             );
             m_users.append(newTeacher);
         }
     }
 
-    // Загружаем группы и студентов
     if (mainObj.contains("Группы")) {
         QJsonArray groups = mainObj["Группы"].toArray();
         for (const auto& groupRef : groups) {
             QJsonObject groupObj = groupRef.toObject();
-            
-            // Создаем объект группы
-            auto* newGroup = new Group(
-                groupObj["user_id"].toInt(),
-                groupObj["name"].toString(),
-                groupObj["role"].toString(),
-                groupObj["login"].toString(),
-                groupObj["password"].toString(),
-                groupObj["group_id"].toInt(),
-                groupObj["course"].toInt()
-            );
-            m_users.append(newGroup);
 
-            // Загружаем студентов группы
+            QList<User*> group_students;
             if (groupObj.contains("студенты")) {
                 QJsonArray students = groupObj["студенты"].toArray();
                 for (const auto& studentRef : students) {
                     QJsonObject student = studentRef.toObject();
-                    auto* newStudent = new Group(
-                        student["user_id"].toInt(),
+                    User* newStudent = new User(
+                        student["id"].toInt(),
                         student["name"].toString(),
-                        student["role"].toString(),
+                        "student",
                         student["login"].toString(),
-                        student["password"].toString(),
-                        groupObj["group_id"].toInt(),
-                        groupObj["course"].toInt()
+                        student["password"].toString()
                     );
-                    m_users.append(newStudent);
+                    group_students.append(newStudent);
                 }
             }
+
+            int group_id = groupObj.value("id").toInt();
+            QString group_name = groupObj.value("name").toString();
+            int group_course = groupObj.value("course").toInt();
+
+            auto *new_group = new Group(
+                    group_id,
+                    group_name,
+                    "group",
+                    "",
+                    "",
+                    group_course,
+                    group_students);
+
+            m_users.append(new_group);
         }
     }
 }
 
-void AuthSystem::save_to_json(const QString& filename) {
+void AuthSystem::save_users_to_json(const QString& file_path) {
     QJsonObject mainObject;
-    
-    // Сохраняем администраторов
+
     QJsonArray adminsArray;
     for (const auto* user : m_users) {
         if (user->role() == "admin") {
             QJsonObject adminObj;
-            adminObj["user_id"] = user->user_id();
+            adminObj["id"] = user->id();
             adminObj["name"] = user->name();
             adminObj["role"] = user->role();
             adminObj["login"] = user->login();
@@ -132,28 +127,24 @@ void AuthSystem::save_to_json(const QString& filename) {
         }
     }
     mainObject["Администраторы"] = adminsArray;
-    
-    // Сохраняем преподавателей
+
     QJsonArray teachersArray;
     for (const auto* user : m_users) {
         if (const auto* teacher = dynamic_cast<const Teacher*>(user)) {
             QJsonObject teacherObj;
-            teacherObj["user_id"] = teacher->user_id();
+            teacherObj["id"] = teacher->id();
             teacherObj["name"] = teacher->name();
             teacherObj["role"] = teacher->role();
             teacherObj["login"] = teacher->login();
             teacherObj["password"] = teacher->password();
-            teacherObj["teacher_id"] = teacher->teacher_id();
-            
-            // Сохраняем предметы
+
             QJsonArray subjectsArray;
             for (const QString& subject : teacher->subjects()) {
                 subjectsArray.append(subject);
             }
             teacherObj["subjects"] = subjectsArray;
-            
-            // Сохраняем существующее расписание
-            QFile readFile(filename);
+
+            QFile readFile(file_path);
             if (readFile.open(QIODevice::ReadOnly)) {
                 QJsonDocument existingDoc = QJsonDocument::fromJson(readFile.readAll());
                 readFile.close();
@@ -173,51 +164,61 @@ void AuthSystem::save_to_json(const QString& filename) {
         }
     }
     mainObject["Преподаватели"] = teachersArray;
-    
-    // Сохраняем группы и студентов
+
+
     QJsonArray groupsArray;
-    QMap<int, QJsonObject> groupObjects; // group_id -> group object
-    
-    // Сначала создаем объекты групп
-    for (const auto* user : m_users) {
-        if (const auto* group = dynamic_cast<const Group*>(user)) {
+    QMap<int, QJsonObject> groupObjects;
+    int row = 0;
+
+    QList<Group*> groups;
+    for (auto* user : m_users) {
+        if (auto *group = dynamic_cast<Group*>(user)) {
             if (group->role() == "group") {
-                QJsonObject groupObj;
-                groupObj["user_id"] = group->user_id();
-                groupObj["name"] = group->name();
-                groupObj["role"] = group->role();
-                groupObj["login"] = group->login();
-                groupObj["password"] = group->password();
-                groupObj["group_id"] = group->group_id();
-                groupObj["course"] = group->course();
-                groupObj["студенты"] = QJsonArray();
-                groupObj["расписание"] = QJsonArray();
-                
-                groupObjects[group->group_id()] = groupObj;
+                groups.append(group);
             }
         }
     }
-    
-    // Добавляем студентов в соответствующие группы
-    for (const auto* user : m_users) {
-        if (const auto* student = dynamic_cast<const Group*>(user)) {
-            if (student->role() == "student" && groupObjects.contains(student->group_id())) {
-                QJsonObject studentObj;
-                studentObj["user_id"] = student->user_id();
-                studentObj["name"] = student->name();
-                studentObj["role"] = student->role();
-                studentObj["login"] = student->login();
-                studentObj["password"] = student->password();
-                
-                QJsonArray studentsArray = groupObjects[student->group_id()]["студенты"].toArray();
-                studentsArray.append(studentObj);
-                groupObjects[student->group_id()]["студенты"] = studentsArray;
-            }
+
+    QMap<int, Group*> id_group_map;
+    for (auto* group: groups) {
+        int id = group->id();
+
+        if (id_group_map.contains(id)) {
+            QList<User*> old_student = id_group_map[id]->students();
+            QList<User*> new_student = group->students();
+            old_student.append(new_student);
+            id_group_map[id]->set_student(old_student);
+        } else {
+            id_group_map[id] = group;
         }
     }
-    
-    // Сохраняем существующее расписание групп
-    QFile readFile(filename);
+
+    for (auto* group: id_group_map) {
+        QJsonObject groupObj;
+        groupObj["id"] = group->id();
+        groupObj["name"] = group->name();
+        groupObj["role"] = group->role();
+        groupObj["course"] = group->course();
+
+        QJsonArray group_students;
+        for (auto student: group->students()) {
+            QJsonObject group_student;
+            group_student["id"] = student->id();
+            group_student["name"] = student->name();
+            group_student["role"] = "student";
+            group_student["login"] = student->login();
+            group_student["password"] = student->password();
+
+            group_students.append(group_student);
+        }
+
+        groupObj["студенты"] = group_students;
+        groupObj["расписание"] = QJsonArray();
+        groupObjects.insert(row, groupObj);
+        row++;
+    }
+
+    QFile readFile(file_path);
     if (readFile.open(QIODevice::ReadOnly)) {
         QJsonDocument existingDoc = QJsonDocument::fromJson(readFile.readAll());
         readFile.close();
@@ -235,16 +236,14 @@ void AuthSystem::save_to_json(const QString& filename) {
             }
         }
     }
-    
-    // Преобразуем map в array
+
     for (const auto& groupObj : groupObjects) {
         groupsArray.append(groupObj);
     }
     
     mainObject["Группы"] = groupsArray;
-    
-    // Сохраняем в файл
-    QFile writeFile(filename);
+
+    QFile writeFile(file_path);
     if (!writeFile.open(QIODevice::WriteOnly)) {
         throw std::runtime_error("Не удалось открыть файл для записи");
     }
@@ -266,8 +265,16 @@ QList<User*> AuthSystem::get_users() const {
 
 User *AuthSystem::login(const QString &login, const QString &password) {
     for (User *user: m_users) {
-        if (user->login() == login && user->password() == password) {
-            return user;
+        if (auto* group = dynamic_cast<Group*>(user)) {
+            for (User *student: group->students()) {
+                if (student->login() == login && student->password() == password) {
+                    return group;
+                }
+            }
+        } else {
+            if (user->login() == login && user->password() == password) {
+                return user;
+            }
         }
     }
     return nullptr;

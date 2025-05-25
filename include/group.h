@@ -1,25 +1,31 @@
-#ifndef CODE_V1_GROUP_H
-#define CODE_V1_GROUP_H
+#ifndef COURSE_GROUP_H
+#define COURSE_GROUP_H
 
 #include "user.h"
 #include <QDateTime>
+#include <QList>
+#include <QStringList>
 
 class Group : public User {
 public:
     Group();
-    Group(int user_id, const QString &name, const QString &role,
+    Group(int id, const QString &name, const QString &role,
           const QString &login, const QString &password,
-          int groupId, int course);
+          int course, const QList<User*> &students);
 
-    int group_id() const;
+    QList<User*> students() const;
+
     int course() const;
-
-    void set_group_id(int id);
     void set_course(int course);
 
+    void add_student(User *student);
+    void delete_student(User *student);
+
+    void set_student(const QList<User*> &students);
+
 private:
-    int m_group_id;
     int m_course;
+    QList<User*> m_students;
 };
 
-#endif //CODE_V1_GROUP_H
+#endif //COURSE_GROUP_H

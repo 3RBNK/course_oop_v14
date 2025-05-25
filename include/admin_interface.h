@@ -1,5 +1,5 @@
-#ifndef CODE_V1_ADMIN_INTERFACE_H
-#define CODE_V1_ADMIN_INTERFACE_H
+#ifndef COURSE_ADMIN_INTERFACE_H
+#define COURSE_ADMIN_INTERFACE_H
 
 #include <QWidget>
 #include <QTabWidget>
@@ -22,13 +22,17 @@ public:
 private slots:
     void add_user();
     void delete_user();
+
     void add_lesson();
     void delete_lesson();
+
     void refresh_users_table();
     void refresh_schedule_table();
-    void on_user_selected();
-    void save_users_to_json();
 
+//    void on_user_selected();
+
+    void save_users_to_json();
+//    void save_schedule_to_json();
 private:
     User *m_admin;
     AuthSystem *m_auth_system;
@@ -45,9 +49,11 @@ private:
     QLineEdit *course_edit;
     QLineEdit *subjects_edit;
 
-    QWidget *schedule_tab;
+    QWidget *schedule_tab_for_group;
+    QWidget *schedule_tab_for_teacher;
+    QComboBox *user_combo_group;
+    QComboBox *user_combo_teacher;
     QTableWidget *schedule_table;
-    QComboBox *user_combo;
     QLineEdit *subject_edit;
     QComboBox *day_combo;
     QComboBox *time_combo;
@@ -56,10 +62,11 @@ private:
 
     void setup_ui();
     void setup_users_tab();
-    void setup_schedule_tab();
+    void setup_schedule_tab_for_group();
+    void setup_schedule_tab_for_teacher();
+
     void populate_role_combo();
     void populate_user_combo();
-    void clear_form();
 
     int generate_unique_user_id();
     int generate_unique_teacher_id();
@@ -67,4 +74,4 @@ private:
     ~AdminInterface();
 };
 
-#endif //CODE_V1_ADMIN_INTERFACE_H
+#endif //COURSE_ADMIN_INTERFACE_H
