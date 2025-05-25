@@ -1,5 +1,5 @@
-#ifndef CODE_V1_SCHEDULE_H
-#define CODE_V1_SCHEDULE_H
+#ifndef COURSE_SCHEDULE_H
+#define COURSE_SCHEDULE_H
 
 #include <QWidget>
 #include <QList>
@@ -14,10 +14,9 @@ public:
 
     void add_lesson(const QSharedPointer<Lesson> &lesson);
     void remove_lesson(int lesson_id);
-    bool check_conflicts() const;
 
     void load_from_json(const QString &file_path, const User &user);
-    void save_to_json(const QString &filePath, const User &user);
+    void save_to_json(const QString &file_path, const User &user);
 
     QList<QSharedPointer<Lesson>> lessons() const;
 
@@ -25,4 +24,4 @@ private:
     QList<QSharedPointer<Lesson>> m_lessons;
 };
 
-#endif // CODE_V1_SCHEDULE_H
+#endif // COURSE_SCHEDULE_H

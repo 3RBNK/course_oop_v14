@@ -47,9 +47,6 @@ void AuthWindow::handleLogin() {
 
         ui->display();
 
-
-        ui->display();
-
         close();
     } else {
         status_label->setText("Неверный логин или пароль");

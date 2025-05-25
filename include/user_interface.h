@@ -1,5 +1,5 @@
-#ifndef CODE_V1_USER_INTERFACE_H
-#define CODE_V1_USER_INTERFACE_H
+#ifndef COURSE_USER_INTERFACE_H
+#define COURSE_USER_INTERFACE_H
 
 #include "user.h"
 #include "interface.h"
@@ -29,4 +29,4 @@ private:
     void populate_user_info();
 };
 
-#endif //CODE_V1_USER_INTERFACE_H
+#endif //COURSE_USER_INTERFACE_H

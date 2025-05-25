@@ -1,5 +1,5 @@
-#ifndef CODE_V1_INTERFACE_H
-#define CODE_V1_INTERFACE_H
+#ifndef COURSE_INTERFACE_H
+#define COURSE_INTERFACE_H
 
 #include <QWidget>
 
@@ -14,4 +14,4 @@ public:
     virtual void display() = 0;
 };
 
-#endif //CODE_V1_INTERFACE_H
+#endif //COURSE_INTERFACE_H

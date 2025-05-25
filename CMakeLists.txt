@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31)
-project(code_v1)
+project(course)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
@@ -14,7 +14,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(code_v1 src/main.cpp
+add_executable(course src/main.cpp
         include/user.h
         include/lesson.h
         include/auditorium.h
@@ -38,7 +38,7 @@ add_executable(code_v1 src/main.cpp
         src/check_correct.cpp
         include/admin_interface.h
         src/admin_interface.cpp)
-target_link_libraries(code_v1
+target_link_libraries(course
         Qt::Core
         Qt::Gui
         Qt::Widgets

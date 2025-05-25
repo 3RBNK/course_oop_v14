@@ -1,5 +1,4 @@
 #include "../include/schedule.h"
-#include <iostream>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -23,17 +22,6 @@ void Schedule::remove_lesson(int lesson_id) {
     }
 }
 
-bool Schedule::check_conflicts() const {
-    for (int i = 0; i < m_lessons.size(); ++i) {
-        for (int j = i + 1; j < m_lessons.size(); ++j) {
-            if (m_lessons[i]->conflict_with(*m_lessons[j])) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 
 void Schedule::load_from_json(const QString &file_path, const User &user) {
     QFile file(file_path);
@@ -41,6 +29,8 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
         qWarning() << "Не удалось открыть файл:" << file.errorString();
         return;
     }
+
+    m_lessons.clear();
 
     QByteArray data = file.readAll();
     file.close();
@@ -53,35 +43,37 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
 
     QJsonObject root = doc.object();
 
-    if (user.role() == "student") {
-        QJsonObject students = root.value("Студенты").toObject();
-        QJsonArray groups = students.value("Группы").toArray();
+    if (user.role() == "group") {
+        QJsonArray groupsArray = root.value("Группы").toArray();
 
-        for (const QJsonValue &groupValue: groups) {
+        for (const QJsonValue &groupValue : groupsArray) {
             QJsonObject groupObj = groupValue.toObject();
-            QJsonArray members = groupObj.value("Одногруппники").toArray();
+            int group_id = groupObj.value("id").toInt();
 
-            bool userFound = false;
-            for (const QJsonValue &memberValue: members) {
-                QJsonObject memberObj = memberValue.toObject();
-                if (memberObj.value("name").toString() == user.name()) {
-                    userFound = true;
-                    break;
-                }
-            }
+            bool userFound = group_id == user.id();
 
             if (userFound) {
-                QJsonArray schedule = groupObj.value("Расписание").toArray();
-                for (const QJsonValue &lessonValue: schedule) {
+                QJsonArray schedule = groupObj.value("расписание").toArray();
+                for (const QJsonValue &lessonValue : schedule) {
                     QJsonObject lessonObj = lessonValue.toObject();
 
-                    int lessonId = lessonObj.value("id").toInt();
+                    int lessonId = lessonObj.value("lesson_id").toInt();
                     QString subject = lessonObj.value("subject").toString();
+                    QStringList subjects = {subject};
+                    QString teacherName = lessonObj.value("teacher_name").toString();
+                    int teacher_id = lessonObj.value("teacher_id").toInt();
                     QDateTime timeSlot = QDateTime::fromString(lessonObj.value("time_slot").toString(), Qt::ISODate);
 
+                    Auditorium auditorium(
+                        lessonObj.value("auditorium_id").toInt(),
+                        lessonObj.value("name").toString(),
+                        lessonObj.value("auditorium_capacity").toInt()
+                    );
 
-                    QSharedPointer <Lesson> lesson = QSharedPointer<Lesson>::create(
-                            lessonId, subject, Teacher(), QList < Group > (), timeSlot, Auditorium()
+                    Teacher teacher(teacher_id, teacherName, "teacher", "", "", subjects);
+
+                    QSharedPointer<Lesson> lesson = QSharedPointer<Lesson>::create(
+                        lessonId, subject, teacher, QList<Group>(), timeSlot, auditorium
                     );
 
                     add_lesson(lesson);
@@ -92,20 +84,40 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
     } else if (user.role() == "teacher") {
         QJsonArray teachers = root.value("Преподаватели").toArray();
 
-        for (const QJsonValue &teacherValue: teachers) {
+        for (const QJsonValue &teacherValue : teachers) {
             QJsonObject teacherObj = teacherValue.toObject();
-            if (teacherObj.value("name").toString() == user.name()) {
+            if (teacherObj.value("login").toString() == user.login()) {
                 QJsonArray schedule = teacherObj.value("расписание").toArray();
 
-                for (const QJsonValue &lessonValue: schedule) {
+                for (const QJsonValue &lessonValue : schedule) {
                     QJsonObject lessonObj = lessonValue.toObject();
 
-                    int lessonId = lessonObj.value("id").toInt();
+                    int lessonId = lessonObj.value("lesson_id").toInt();
                     QString subject = lessonObj.value("subject").toString();
                     QDateTime timeSlot = QDateTime::fromString(lessonObj.value("time_slot").toString(), Qt::ISODate);
 
-                    QSharedPointer <Lesson> lesson = QSharedPointer<Lesson>::create(
-                            lessonId, subject, Teacher(), QList < Group > (), timeSlot, Auditorium()
+                    Auditorium auditorium(
+                        lessonObj.value("auditorium_id").toInt(),
+                        lessonObj.value("name").toString(),
+                        lessonObj.value("auditorium_capacity").toInt()
+                    );
+
+                    QList<Group> groups;
+                    QJsonArray group_names = lessonObj.value("group_names").toArray();
+                    for (const QJsonValue &group_name : group_names) {
+                        Group group(0, group_name.toString(), "group", "", "", 0, {});
+                        groups.append(group);
+                    }
+
+                    QString teacher_name = teacherObj.value("name").toString();
+                    QStringList subjects = {};
+                    for (const QJsonValue &subject: teacherObj.value("subjects").toArray()) {
+                        subjects.append(subject.toString());
+                    }
+                    Teacher teacher = Teacher(0, teacher_name, "teacher", "", "", subjects);
+
+                    QSharedPointer<Lesson> lesson = QSharedPointer<Lesson>::create(
+                        lessonId, subject, teacher, groups, timeSlot, auditorium
                     );
 
                     add_lesson(lesson);
@@ -114,14 +126,14 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
             }
         }
     } else {
-        qDebug() << "Роль" << user.role() << " не поддерживается";
+        qDebug() << "Роль" << user.role() << "не поддерживается";
     }
 }
 
-void Schedule::save_to_json(const QString &filePath, const User &user) {
-    QFile file(filePath);
+void Schedule::save_to_json(const QString &file_path, const User &user) {
+    QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Не удалось открыть файл для чтения:" << filePath;
+        qWarning() << "Не удалось открыть файл для чтения:" << file_path;
         return;
     }
 
@@ -140,41 +152,48 @@ void Schedule::save_to_json(const QString &filePath, const User &user) {
     QJsonArray lessonsArray;
     for (const auto &lesson: m_lessons) {
         QJsonObject lessonObj;
+
+        lessonObj["lesson_id"] = lesson->lesson_id();
         lessonObj["subject"] = lesson->subject();
-        lessonObj["datetime"] = lesson->time_slot().toString(Qt::ISODate);
-        lessonObj["auditorium"] = lesson->auditorium().auditorium_info();
-        lessonObj["teacher"] = lesson->teacher().teacher_info();
+        lessonObj["time_slot"] = lesson->time_slot().toString(Qt::ISODate);
+        lessonObj["auditorium_capacity"] = lesson->auditorium().capacity();
+        lessonObj["auditorium_id"] = lesson->auditorium().room_id();
+        lessonObj["auditorium_name"] = lesson->auditorium().name();
+
+        if (user.role() == "group") {
+            lessonObj["teacher_id"] = lesson->teacher().id();
+            lessonObj["teacher_name"] = lesson->teacher().name();
+        } else if (user.role() == "teacher") {
+            QJsonArray group_names;
+            for (auto group_name: lesson->groups()) {
+                group_names.append(group_name.name());
+            }
+            lessonObj["group_names"] = group_names;
+        }
+
         lessonsArray.append(lessonObj);
     }
 
-    if (user.role() == "student") {
-        QJsonObject studentsObj = rootObj["Студенты"].toObject();
-        QJsonArray groupsArray = studentsObj["Группы"].toArray();
+    if (user.role() == "group") {
+        QJsonArray groupsArray = rootObj["Группы"].toArray();
 
         for (int i = 0; i < groupsArray.size(); ++i) {
             QJsonObject groupObj = groupsArray[i].toObject();
-            QJsonArray studentsArray = groupObj["Одногруппники"].toArray();
-
-            for (int j = 0; j < studentsArray.size(); ++j) {
-                QJsonObject studentObj = studentsArray[j].toObject();
-                if (studentObj["id"].toInt() == user.user_id()) {
-                    studentObj["schedule"] = lessonsArray;
-                    studentsArray[j] = studentObj;
-                    groupObj["Одногруппники"] = studentsArray;
-                    groupsArray[i] = groupObj;
-                    break;
-                }
+            int group_id = groupObj.value("id").toInt();
+            if (group_id == user.id()) {
+                groupObj["расписание"] = lessonsArray;
+                groupsArray[i] = groupObj;
+                break;
             }
         }
-        studentsObj["Группы"] = groupsArray;
-        rootObj["Студенты"] = studentsObj;
+        rootObj["Группы"] = groupsArray;
     } else if (user.role() == "teacher") {
         QJsonArray teachersArray = rootObj["Преподаватели"].toArray();
 
         for (int i = 0; i < teachersArray.size(); ++i) {
             QJsonObject teacherObj = teachersArray[i].toObject();
             if (teacherObj["name"].toString() == user.name()) {
-                teacherObj["schedule"] = lessonsArray;
+                teacherObj["расписание"] = lessonsArray;
                 teachersArray[i] = teacherObj;
                 break;
             }
@@ -183,7 +202,7 @@ void Schedule::save_to_json(const QString &filePath, const User &user) {
     }
 
     if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Не удалось открыть файл для записи:" << filePath;
+        qWarning() << "Не удалось открыть файл для записи:" << file_path;
         return;
     }
 
@@ -194,9 +213,6 @@ void Schedule::save_to_json(const QString &filePath, const User &user) {
     qDebug() << "Расписание успешно сохранено для пользователя:" << user.name();
 }
 
-
-QList<QSharedPointer < Lesson>>
-
-Schedule::lessons() const {
+QList<QSharedPointer<Lesson>> Schedule::lessons() const {
     return m_lessons;
 }

@@ -1,5 +1,5 @@
-#ifndef CODE_V1_AUDITORIUM_H
-#define CODE_V1_AUDITORIUM_H
+#ifndef COURSE_AUDITORIUM_H
+#define COURSE_AUDITORIUM_H
 
 #include <QString>
 #include <QStringList>
@@ -9,7 +9,7 @@ class Auditorium {
 public:
     explicit Auditorium(const QString& auditorium_name);
     Auditorium();
-    Auditorium(int room_id, int capacity, const QStringList &equipment);
+    Auditorium(int room_id, const QString& auditorium_name, int capacity);
 
     int room_id() const;
     void set_room_id(int id);
@@ -17,8 +17,8 @@ public:
     int capacity() const;
     void set_capacity(int capacity);
 
-    QStringList equipment() const;
-    void set_equipment(const QStringList &equipment);
+    QString name() const;
+    void set_name(const QString &auditorium_name);
 
     QString auditorium_info() const;
 
@@ -32,8 +32,7 @@ private:
     int m_room_id;
     int m_capacity;
     QString m_auditorium_name;
-    QStringList m_equipment;
     QList<QDateTime> m_reserved_slots;
 };
 
-#endif //CODE_V1_AUDITORIUM_H
+#endif //COURSE_AUDITORIUM_H

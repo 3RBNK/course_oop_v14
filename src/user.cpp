@@ -3,7 +3,7 @@
 
 
 User::User()
-        : m_user_id(0),
+        : m_id(0),
           m_name(""),
           m_role(""),
           m_login(""),
@@ -13,7 +13,7 @@ User::User()
 
 User::User(int user_id, const QString &name, const QString &role,
            const QString &login, const QString &password)
-        : m_user_id(user_id),
+        : m_id(user_id),
           m_name(name),
           m_role(role),
           m_login(login),
@@ -21,8 +21,8 @@ User::User(int user_id, const QString &name, const QString &role,
 {
 }
 
-int User::user_id() const {
-    return m_user_id;
+int User::id() const {
+    return m_id;
 }
 
 QString User::name() const {
@@ -33,8 +33,8 @@ QString User::role() const {
     return m_role;
 }
 
-void User::set_user_id(int id) {
-    m_user_id = id;
+void User::set_id(int id) {
+    m_id = id;
 }
 
 void User::set_name(const QString &name) {
@@ -51,4 +51,11 @@ QString User::login() const {
 
 QString User::password() const {
     return m_password;
+}
+
+bool User::operator==(const User &other) const {
+    bool id_conflict = m_id == other.m_id;
+    bool login_conflict = m_login == other.m_login;
+
+    return id_conflict || login_conflict;
 }

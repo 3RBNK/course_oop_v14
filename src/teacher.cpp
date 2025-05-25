@@ -1,28 +1,23 @@
 #include "../include/teacher.h"
 
-Teacher::Teacher(const QString& teacher_name)
-        : m_teacher_name(teacher_name)
-{
-}
-
 
 Teacher::Teacher()
-        : User(), m_teacher_id(0), m_subjects("")
+        : User(), m_subjects("")
 {
 }
 
-Teacher::Teacher(int user_id, const QString &name, const QString &role,
+Teacher::Teacher(int id, const QString &name, const QString &role,
                  const QString &login, const QString &password,
-                 int teacherId, const QStringList &subjects)
-        : User(user_id, name, role, login, password),
-          m_teacher_id(teacherId),
+                 const QStringList &subjects)
+        : User(id, name, role, login, password),
           m_subjects(subjects)
 {
 }
 
-
-int Teacher::teacher_id() const {
-    return m_teacher_id;
+Teacher::Teacher(const QString &name)
+    : User(), m_subjects({})
+{
+    m_name = name;
 }
 
 QStringList Teacher::subjects() const {
@@ -40,7 +35,7 @@ void Teacher::add_subject(const QString &subject) {
 }
 
 QString Teacher::teacher_info() const {
-    return QString("%1\nПредметы: %2")
+    return QString("%1: \nПредметы: %2")
             .arg(name())
             .arg(m_subjects.join(", "));
 }

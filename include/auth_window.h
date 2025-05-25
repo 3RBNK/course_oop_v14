@@ -1,5 +1,5 @@
-#ifndef CODE_V1_AUTH_WINDOW_H
-#define CODE_V1_AUTH_WINDOW_H
+#ifndef COURSE_AUTH_WINDOW_H
+#define COURSE_AUTH_WINDOW_H
 
 #include <QWidget>
 #include <QLineEdit>
@@ -29,4 +29,4 @@ private:
     void setupUI();
 };
 
-#endif //CODE_V1_AUTH_WINDOW_H
+#endif //COURSE_AUTH_WINDOW_H

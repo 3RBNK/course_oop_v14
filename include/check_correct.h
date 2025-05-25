@@ -1,20 +1,18 @@
-#ifndef CODE_V1_CHECK_CORRECT_H
-#define CODE_V1_CHECK_CORRECT_H
+#ifndef COURSE_CHECK_CORRECT_H
+#define COURSE_CHECK_CORRECT_H
 
-#include <QObject>
 #include <QStringList>
 #include "schedule.h"
 
-class CheckCorrect : public QObject {
-Q_OBJECT
-
+class CheckCorrect  {
 public:
-    explicit CheckCorrect(QObject *parent = nullptr);
+    explicit CheckCorrect() = default;
     bool validate_schedule(const QList<QSharedPointer<Lesson>> &lessons);
+    bool validate_users(const QList<User*> &users);
     QStringList errors() const;
 
 private:
     QStringList m_errors;
 };
 
-#endif //CODE_V1_CHECK_CORRECT_H
+#endif //COURSE_CHECK_CORRECT_H
