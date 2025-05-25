@@ -16,7 +16,7 @@ class AdminInterface : public Interface {
 Q_OBJECT
 
 public:
-    explicit AdminInterface(User *admin, QWidget *parent = nullptr);
+    explicit AdminInterface(QWidget *parent = nullptr);
     void display() override;
 
 private slots:
@@ -29,12 +29,8 @@ private slots:
     void refresh_users_table();
     void refresh_schedule_table();
 
-//    void on_user_selected();
-
     void save_users_to_json();
-//    void save_schedule_to_json();
 private:
-    User *m_admin;
     AuthSystem *m_auth_system;
     Schedule *m_schedule;
     QTabWidget *tab_widget;
@@ -45,9 +41,6 @@ private:
     QLineEdit *login_edit;
     QLineEdit *password_edit;
     QComboBox *role_combo;
-    QLineEdit *group_id_edit;
-    QLineEdit *course_edit;
-    QLineEdit *subjects_edit;
 
     QWidget *schedule_tab_for_group;
     QWidget *schedule_tab_for_teacher;
@@ -78,6 +71,7 @@ private:
     void populate_user_combo();
 
     int generate_unique_user_id();
+    int generate_unique_lesson_id();
     int generate_unique_teacher_id();
 
     ~AdminInterface();

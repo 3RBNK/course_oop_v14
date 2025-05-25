@@ -11,7 +11,7 @@
     "Группы": [
         {
             "course": 1,
-            "id": 402,
+            "id": 401,
             "name": "KB-231",
             "role": "group",
             "расписание": [
@@ -19,9 +19,9 @@
             "студенты": [
                 {
                     "id": 502,
-                    "login": "asdf",
-                    "name": "asdf",
-                    "password": "asdf",
+                    "login": "k",
+                    "name": "kiri",
+                    "password": "k",
                     "role": "student"
                 }
             ]
@@ -29,23 +29,23 @@
         {
             "course": 1,
             "id": 501,
-            "name": "VT-101",
+            "name": "VT-322",
             "role": "group",
             "расписание": [
             ],
             "студенты": [
                 {
                     "id": 2,
-                    "login": "asdf",
-                    "name": "kal",
-                    "password": "asdf",
+                    "login": "d",
+                    "name": "dima",
+                    "password": "d",
                     "role": "student"
                 },
                 {
                     "id": 502,
-                    "login": "g2",
-                    "name": "g2",
-                    "password": "g2",
+                    "login": "n",
+                    "name": "nikita",
+                    "password": "n",
                     "role": "student"
                 }
             ]
@@ -53,27 +53,28 @@
     ],
     "Преподаватели": [
         {
-            "id": 1,
+            "id": 1001,
             "login": "t2",
             "name": "t2",
             "password": "t2",
             "role": "teacher",
             "subjects": [
-                "ооп"
+                "опп"
             ],
             "расписание": [
             ]
         },
         {
-            "id": 101,
-            "login": "d2",
-            "name": "d2",
-            "password": "d2",
+            "id": 1002,
+            "login": "t",
+            "name": "t",
+            "password": "t",
             "role": "teacher",
             "subjects": [
                 "матан"
             ],
-            "расписание": null
+            "расписание": [
+            ]
         }
     ]
 }
