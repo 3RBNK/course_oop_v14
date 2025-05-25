@@ -1,0 +1,129 @@
+{
+    "Администраторы": [
+        {
+            "login": "admin",
+            "name": "Admin One",
+            "password": "admin",
+            "role": "admin",
+            "user_id": 1
+        },
+        {
+            "login": "admin2",
+            "name": "Admin Two",
+            "password": "adminpass2",
+            "role": "admin",
+            "user_id": 2
+        }
+    ],
+    "Группы": [
+        {
+            "course": 1,
+            "group_id": 501,
+            "login": "group_vt101",
+            "name": "ВТ-101",
+            "password": "grpass101",
+            "role": "group",
+            "user_id": 20,
+            "расписание": [
+                {
+                    "auditorium": "301",
+                    "id": 100,
+                    "subject": "Алгоритмы",
+                    "teacher": "Сидоров С.С.",
+                    "time_slot": "2025-05-20T08:30:00"
+                }
+            ],
+            "студенты": [
+                {
+                    "login": "borisov",
+                    "name": "Борисов Борис",
+                    "password": "pass2",
+                    "role": "student",
+                    "user_id": 102
+                }
+            ]
+        },
+        {
+            "course": 2,
+            "group_id": 502,
+            "login": "group_vt202",
+            "name": "ВТ-202",
+            "password": "grpass202",
+            "role": "group",
+            "user_id": 21,
+            "расписание": [
+            ],
+            "студенты": [
+            ]
+        }
+    ],
+    "Преподаватели": [
+        {
+            "login": "sidorov",
+            "name": "Сидоров С.С.",
+            "password": "teach1",
+            "role": "teacher",
+            "subjects": [
+                "Алгоритмы"
+            ],
+            "teacher_id": 1000,
+            "user_id": 10,
+            "расписание": [
+                {
+                    "auditorium": "301",
+                    "groups": [
+                        "ВТ-101"
+                    ],
+                    "id": 100,
+                    "subject": "Алгоритмы",
+                    "time_slot": "2025-05-20T08:30:00"
+                }
+            ]
+        },
+        {
+            "login": "ivanova",
+            "name": "Иванова И.И.",
+            "password": "teach2",
+            "role": "teacher",
+            "subjects": [
+                "Компьютерные сети"
+            ],
+            "teacher_id": 1001,
+            "user_id": 11,
+            "расписание": [
+                {
+                    "auditorium": "302",
+                    "groups": [
+                        "ПВ-202"
+                    ],
+                    "id": 101,
+                    "subject": "Компьютерные сети",
+                    "time_slot": "2025-05-21T10:15:00"
+                }
+            ]
+        },
+        {
+            "login": "2342143",
+            "name": "234",
+            "password": "4213341",
+            "role": "teacher",
+            "subjects": [
+            ],
+            "teacher_id": 1002,
+            "user_id": 105,
+            "расписание": null
+        },
+        {
+            "login": "sidorov",
+            "name": "asdfasdf",
+            "password": "teach1",
+            "role": "teacher",
+            "subjects": [
+                "432"
+            ],
+            "teacher_id": 1003,
+            "user_id": 107,
+            "расписание": null
+        }
+    ]
+}

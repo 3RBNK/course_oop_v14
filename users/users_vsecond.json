@@ -1,0 +1,66 @@
+{
+    "Администраторы": [
+        {
+            "id": 1,
+            "login": "admin",
+            "name": "Admin One",
+            "password": "admin",
+            "role": "admin"
+        }
+    ],
+    "Группы": [
+        {
+            "course": 1,
+            "id": 501,
+            "name": "ВТ-101",
+            "role": "group",
+            "расписание": [
+                {
+                    "auditorium_capacity": 3,
+                    "auditorium_id": 100,
+                    "auditorium_name": "301",
+                    "lesson_id": 300,
+                    "subject": "Алгоритмы",
+                    "teacher_id": 1001,
+                    "teacher_name": "Сидоров С.С.",
+                    "time_slot": "2025-05-20T08:15:00"
+                }
+            ],
+            "студенты": [
+                {
+                    "id": 102,
+                    "login": "borisov",
+                    "name": "Борисов Борис",
+                    "password": "pass2",
+                    "role": "student"
+                }
+            ]
+        }
+    ],
+    "Преподаватели": [
+        {
+            "id": 10,
+            "login": "sidorov",
+            "name": "Сидоров С.С.",
+            "password": "teach1",
+            "role": "teacher",
+            "subjects": [
+                "Алгоритмы"
+            ],
+            "расписание": [
+                {
+                    "auditorium_capacity": 3,
+                    "auditorium_id": 100,
+                    "auditorium_name": "301",
+                    "group_name": [
+                        "602",
+                        "501"
+                    ],
+                    "lesson_id": 300,
+                    "subject": "Алгоритмы",
+                    "time_slot": "2025-05-20T08:15:00"
+                }
+            ]
+        }
+    ]
+}

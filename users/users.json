@@ -1,0 +1,154 @@
+{
+    "Администраторы": [
+        {
+            "id": 1,
+            "login": "admin",
+            "name": "Admin One",
+            "password": "admin",
+            "role": "admin"
+        }
+    ],
+    "Группы": [
+        {
+            "course": 1,
+            "id": 501,
+            "name": "ВТ-101",
+            "role": "group",
+            "расписание": [
+                {
+                    "auditorium_capacity": 3,
+                    "auditorium_id": 100,
+                    "auditorium_name": "",
+                    "lesson_id": 300,
+                    "subject": "Алгоритмы",
+                    "teacher_id": 1001,
+                    "teacher_name": "Сидоров С.С.",
+                    "time_slot": "2025-05-20T08:15:00"
+                },
+                {
+                    "auditorium_capacity": 362,
+                    "auditorium_id": 1185443728,
+                    "auditorium_name": "",
+                    "lesson_id": 0,
+                    "subject": "ававыав",
+                    "teacher_id": 0,
+                    "teacher_name": "аыва",
+                    "time_slot": "2025-05-26T10:00:00"
+                },
+                {
+                    "auditorium_capacity": 78,
+                    "auditorium_id": 180337568,
+                    "auditorium_name": "",
+                    "lesson_id": 0,
+                    "subject": "yutuytruy",
+                    "teacher_id": 0,
+                    "teacher_name": "utyuty",
+                    "time_slot": "2025-05-26T08:15:00"
+                }
+            ],
+            "студенты": [
+                {
+                    "id": 511,
+                    "login": "asdf",
+                    "name": "kal",
+                    "password": "asdf",
+                    "role": "student"
+                },
+                {
+                    "id": 502,
+                    "login": "g2",
+                    "name": "g",
+                    "password": "g2",
+                    "role": "student"
+                }
+            ]
+        }
+    ],
+    "Преподаватели": [
+        {
+            "id": 10,
+            "login": "sidorov",
+            "name": "Сидоров С.С.",
+            "password": "teach1",
+            "role": "teacher",
+            "subjects": [
+                "Алгоритмы"
+            ],
+            "расписание": [
+                {
+                    "auditorium_capacity": 3,
+                    "auditorium_id": 100,
+                    "auditorium_name": "",
+                    "group_names": [
+                        "ВТ-101"
+                    ],
+                    "lesson_id": 300,
+                    "subject": "Алгоритмы",
+                    "time_slot": "2025-05-20T08:15:00"
+                },
+                {
+                    "auditorium_capacity": 32766,
+                    "auditorium_id": 916802688,
+                    "auditorium_name": "asdf",
+                    "group_names": [
+                    ],
+                    "lesson_id": 0,
+                    "subject": "sfdafsad",
+                    "time_slot": "2025-05-25T08:15:00"
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "login": "t2",
+            "name": "t2",
+            "password": "t2",
+            "role": "teacher",
+            "subjects": [
+                "ооооооооп"
+            ],
+            "расписание": [
+                {
+                    "auditorium_capacity": 680,
+                    "auditorium_id": -1894813808,
+                    "auditorium_name": "",
+                    "group_names": [
+                    ],
+                    "lesson_id": 0,
+                    "subject": "sdfgsdf",
+                    "time_slot": "2025-05-28T14:20:00"
+                },
+                {
+                    "auditorium_capacity": 295,
+                    "auditorium_id": -206346528,
+                    "auditorium_name": "",
+                    "group_names": [
+                    ],
+                    "lesson_id": 0,
+                    "subject": "sfdgfgds",
+                    "time_slot": "2025-05-27T11:45:00"
+                },
+                {
+                    "auditorium_capacity": 528,
+                    "auditorium_id": 312985888,
+                    "auditorium_name": "",
+                    "group_names": [
+                    ],
+                    "lesson_id": 0,
+                    "subject": "fdsgfdgs",
+                    "time_slot": "2025-05-25T08:15:00"
+                },
+                {
+                    "auditorium_capacity": 528,
+                    "auditorium_id": 312988000,
+                    "auditorium_name": "sdfg",
+                    "group_names": [
+                    ],
+                    "lesson_id": 0,
+                    "subject": "sdfg",
+                    "time_slot": "2025-05-25T10:00:00"
+                }
+            ]
+        }
+    ]
+}
