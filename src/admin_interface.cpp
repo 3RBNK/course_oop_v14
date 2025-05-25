@@ -402,11 +402,6 @@ void AdminInterface::add_lesson() {
     QString auditorium_name = auditorium_edit->text();
     QString teacher_name = teacher_edit->text();
 
-    qDebug() << "Read from UI:"
-             << "subject:" << subject
-             << ", auditorium:" << auditorium_name
-             << ", teacher:" << teacher_name;
-
 
     if (subject.isEmpty() || auditorium_name.isEmpty() || teacher_name.isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Все поля должны быть заполнены!");
