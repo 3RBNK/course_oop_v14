@@ -71,9 +71,12 @@ void Schedule::load_from_json(const QString &file_path, const User &user) {
                     );
 
                     Teacher teacher(teacher_id, teacherName, "teacher", "", "", subjects);
+                    Group group(group_id, user.name(), "group", "", "", 0, {});
+                    QList<Group> groups = {group};
+
 
                     QSharedPointer<Lesson> lesson = QSharedPointer<Lesson>::create(
-                        lessonId, subject, teacher, QList<Group>(), timeSlot, auditorium
+                        lessonId, subject, teacher, groups, timeSlot, auditorium
                     );
 
                     add_lesson(lesson);

@@ -5,7 +5,15 @@
 #include <QHeaderView>
 #include <QDateTime>
 #include <QLabel>
+#include <QPushButton>
+#include <QMessageBox>
+#include <winsock.h>
+#include <QStringList>
+#include <QSharedPointer>
+#include <QLineEdit>
+#include <QInputDialog>
 
+// (⓿_⓿)
 UserInterface::UserInterface(User *user, QWidget *parent)
         : Interface(parent), m_user(user)
 {
@@ -20,6 +28,14 @@ UserInterface::UserInterface(User *user, QWidget *parent)
 
     create_schedule_table();
     mainLayout->addWidget(schedule_table);
+
+    if (user->role() == "teacher") {
+        m_auth_system = new AuthSystem();
+
+        auto *search_btn = new QPushButton("Поиск свободных аудиторий", this);
+        mainLayout->addWidget(search_btn);
+        connect(search_btn, &QPushButton::clicked, this, &UserInterface::search_free_auditorium);
+    }
 
     setLayout(mainLayout);
 }
@@ -54,10 +70,68 @@ void UserInterface::populate_user_info() {
     infoLayout->addStretch();
 }
 
-void UserInterface::create_schedule_table() {
-    schedule_table = new QTableWidget(6, 6, this);
+void UserInterface::search_free_auditorium() {
+    bool ok;
+    QString day = QInputDialog::getText(this, "Свободные аудитории",
+                                        "Введите день недели (например: понедельник, среда):",
+                                        QLineEdit::Normal, "", &ok);
+    if (!ok || day.trimmed().isEmpty()) {
+        return;
+    }
 
-    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
+    day = day.trimmed().toLower();
+
+    QMap<QString, int> day_mapping = {
+            {"понедельник", 0}, {"вторник", 1}, {"среда", 2},
+            {"четверг", 3}, {"пятница", 4}, {"суббота", 5}, {"воскресенье", 6}
+    };
+
+    if (!day_mapping.contains(day)) {
+        QMessageBox::warning(this, "Ошибка", "Неверный день недели!");
+        return;
+    }
+
+    int day_of_week = day_mapping[day];
+
+    QSet<QString> busy_auditoriums;
+    for (const auto &lesson : m_schedule->lessons()) {
+        QDateTime time_slot = lesson->time_slot();
+        if (time_slot.date().dayOfWeek()%7 == day_of_week && !lesson->groups().isEmpty()) {
+            busy_auditoriums.insert(lesson->auditorium().name());
+        }
+    }
+
+    QStringList all_auditoriums;
+    for (const auto &lesson : m_schedule->lessons()) {
+        const QString &auditorium_name = lesson->auditorium().name();
+        if (!all_auditoriums.contains(auditorium_name)) {
+            all_auditoriums.append(auditorium_name);
+        }
+    }
+
+    QStringList free_auditoriums;
+    for (const QString &auditorium : all_auditoriums) {
+        if (!busy_auditoriums.contains(auditorium)) {
+            free_auditoriums.append(auditorium);
+        }
+    }
+
+    QString message;
+    if (free_auditoriums.isEmpty()) {
+        message = "На этот день нет свободных аудиторий.";
+    } else {
+        message = "Свободные аудитории в " + day + ":\n" + free_auditoriums.join("\n");
+    }
+
+    QMessageBox::information(this, "Результаты поиска", message);
+
+}
+
+
+void UserInterface::create_schedule_table() {
+    schedule_table = new QTableWidget(6, 7, this);
+
+    QStringList days = {"Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресение"};
     QStringList times = {
             "08:15-09:50", "10:00-11:35", "11:45-13:20",
             "14:20-15:55", "16:05-17:40", "17:50-19:25"
@@ -72,10 +146,7 @@ void UserInterface::create_schedule_table() {
     for (const QSharedPointer<Lesson> &lesson : m_schedule->lessons()) {
         QDateTime time = lesson->time_slot();
 
-        int day = time.date().dayOfWeek();
-        if (day > 6) {
-            continue;
-        }
+        int day = time.date().dayOfWeek()%7;
 
         QTime lesson_time = time.time();
         int row = -1;
@@ -97,7 +168,7 @@ void UserInterface::create_schedule_table() {
 
         QTableWidgetItem *item = new QTableWidgetItem(text);
         item->setTextAlignment(Qt::AlignCenter);
-        schedule_table->setItem(row, day - 1, item);
+        schedule_table->setItem(row, day, item);
     }
 
     schedule_table->setEditTriggers(QAbstractItemView::NoEditTriggers);

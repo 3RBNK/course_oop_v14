@@ -22,17 +22,13 @@ public:
 
     QString auditorium_info() const;
 
-    bool is_available(const QDateTime &dateTime) const;
-    void reserve_slot(const QDateTime &date_time);
-    void release_slot(const QDateTime &date_time);
-
-    QList<QDateTime> reserved_slots() const;
+    bool is_reserved() const;
 
 private:
     int m_room_id;
     int m_capacity;
     QString m_auditorium_name;
-    QList<QDateTime> m_reserved_slots;
+    bool m_reserved_slots;
 };
 
 #endif //COURSE_AUDITORIUM_H

@@ -32,6 +32,16 @@
             "name": "VT-322",
             "role": "group",
             "расписание": [
+                {
+                    "auditorium_capacity": 511,
+                    "auditorium_id": 1336089376,
+                    "auditorium_name": "asdf",
+                    "lesson_id": 501,
+                    "subject": "asdf",
+                    "teacher_id": 0,
+                    "teacher_name": "asdf",
+                    "time_slot": "2025-05-25T08:15:00"
+                }
             ],
             "студенты": [
                 {
@@ -62,6 +72,38 @@
                 "опп"
             ],
             "расписание": [
+                {
+                    "auditorium_capacity": 418,
+                    "auditorium_id": 1104029200,
+                    "auditorium_name": "free",
+                    "group_names": [
+                    ],
+                    "lesson_id": 501,
+                    "subject": "free",
+                    "time_slot": "2025-05-25T08:15:00"
+                },
+                {
+                    "auditorium_capacity": 418,
+                    "auditorium_id": 1104029200,
+                    "auditorium_name": "asdf",
+                    "group_names": [
+                        "KB-101"
+                    ],
+                    "lesson_id": 502,
+                    "subject": "asdf",
+                    "time_slot": "2025-05-25T14:20:00"
+                },
+                {
+                    "auditorium_capacity": 418,
+                    "auditorium_id": 1104029200,
+                    "auditorium_name": "asdf2",
+                    "group_names": [
+                        "VT-101"
+                    ],
+                    "lesson_id": 503,
+                    "subject": "asdf2",
+                    "time_slot": "2025-05-25T16:05:00"
+                }
             ]
         },
         {

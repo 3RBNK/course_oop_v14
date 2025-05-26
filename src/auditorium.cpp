@@ -41,19 +41,6 @@ QString Auditorium::auditorium_info() const {
             .arg(m_capacity);
 }
 
-bool Auditorium::is_available(const QDateTime &dateTime) const {
-    return !m_reserved_slots.contains(dateTime);
-}
-
-void Auditorium::reserve_slot(const QDateTime &dateTime) {
-    if (!m_reserved_slots.contains(dateTime))
-        m_reserved_slots.append(dateTime);
-}
-
-void Auditorium::release_slot(const QDateTime &dateTime) {
-    m_reserved_slots.removeAll(dateTime);
-}
-
-QList<QDateTime> Auditorium::reserved_slots() const {
+bool Auditorium::is_reserved() const {
     return m_reserved_slots;
 }
