@@ -15,12 +15,11 @@
 
 // (⓿_⓿)
 UserInterface::UserInterface(User *user, QWidget *parent)
-        : Interface(parent), m_user(user)
-{
+        : Interface(parent), m_user(user) {
     m_schedule = new Schedule(this);
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *user);
 
-    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout * mainLayout = new QVBoxLayout(this);
 
     user_info_widget = new QWidget(this);
     populate_user_info();
@@ -41,22 +40,23 @@ UserInterface::UserInterface(User *user, QWidget *parent)
 }
 
 void UserInterface::populate_user_info() {
-    QVBoxLayout *infoLayout = new QVBoxLayout(user_info_widget);
+    QVBoxLayout * infoLayout = new QVBoxLayout(user_info_widget);
 
     if (auto *group = dynamic_cast<Group *>(m_user)) {
         infoLayout->addWidget(new QLabel(QString("ID группы: %1").arg(group->id())));
         infoLayout->addWidget(new QLabel("Название группы: " + group->name()));
         infoLayout->addWidget(new QLabel(QString("Курс: %1").arg(group->course())));
 
-        const QList<User*> students = group->students();
+        const QList<User *> students = group->students();
         QStringList studentNames;
-        for (User* student : students) {
+        for (User *student: students) {
             if (student && student->role() == "student") {
                 studentNames << student->name();
             }
         }
 
-        QLabel *studentsLabel = new QLabel("Студенты группы: " + (studentNames.isEmpty() ? "нет" : studentNames.join(", ")));
+        QLabel *studentsLabel = new QLabel(
+                "Студенты группы: " + (studentNames.isEmpty() ? "нет" : studentNames.join(", ")));
         infoLayout->addWidget(studentsLabel);
     } else if (m_user->role() == "teacher") {
         if (auto *teacher = dynamic_cast<Teacher *>(m_user)) {
@@ -82,8 +82,13 @@ void UserInterface::search_free_auditorium() {
     day = day.trimmed().toLower();
 
     QMap<QString, int> day_mapping = {
-            {"понедельник", 0}, {"вторник", 1}, {"среда", 2},
-            {"четверг", 3}, {"пятница", 4}, {"суббота", 5}, {"воскресенье", 6}
+            {"понедельник", 0},
+            {"вторник",     1},
+            {"среда",       2},
+            {"четверг",     3},
+            {"пятница",     4},
+            {"суббота",     5},
+            {"воскресенье", 6}
     };
 
     if (!day_mapping.contains(day)) {
@@ -94,15 +99,15 @@ void UserInterface::search_free_auditorium() {
     int day_of_week = day_mapping[day];
 
     QSet<QString> busy_auditoriums;
-    for (const auto &lesson : m_schedule->lessons()) {
+    for (const auto &lesson: m_schedule->lessons()) {
         QDateTime time_slot = lesson->time_slot();
-        if (time_slot.date().dayOfWeek()%7 == day_of_week && !lesson->groups().isEmpty()) {
+        if (time_slot.date().dayOfWeek() % 7 == day_of_week && !lesson->groups().isEmpty()) {
             busy_auditoriums.insert(lesson->auditorium().name());
         }
     }
 
     QStringList all_auditoriums;
-    for (const auto &lesson : m_schedule->lessons()) {
+    for (const auto &lesson: m_schedule->lessons()) {
         const QString &auditorium_name = lesson->auditorium().name();
         if (!all_auditoriums.contains(auditorium_name)) {
             all_auditoriums.append(auditorium_name);
@@ -110,7 +115,7 @@ void UserInterface::search_free_auditorium() {
     }
 
     QStringList free_auditoriums;
-    for (const QString &auditorium : all_auditoriums) {
+    for (const QString &auditorium: all_auditoriums) {
         if (!busy_auditoriums.contains(auditorium)) {
             free_auditoriums.append(auditorium);
         }
@@ -143,10 +148,10 @@ void UserInterface::create_schedule_table() {
     schedule_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     schedule_table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    for (const QSharedPointer<Lesson> &lesson : m_schedule->lessons()) {
+    for (const QSharedPointer <Lesson> &lesson: m_schedule->lessons()) {
         QDateTime time = lesson->time_slot();
 
-        int day = time.date().dayOfWeek()%7;
+        int day = time.date().dayOfWeek() % 7;
 
         QTime lesson_time = time.time();
         int row = -1;

@@ -28,6 +28,23 @@
         },
         {
             "course": 1,
+            "id": 402,
+            "name": "KB-231",
+            "role": "group",
+            "расписание": [
+            ],
+            "студенты": [
+                {
+                    "id": 1005,
+                    "login": "afsdfasdf",
+                    "name": "asdfasdf",
+                    "password": "asdfasdf",
+                    "role": "student"
+                }
+            ]
+        },
+        {
+            "course": 1,
             "id": 501,
             "name": "VT-322",
             "role": "group",
@@ -40,6 +57,16 @@
                     "subject": "asdf",
                     "teacher_id": 0,
                     "teacher_name": "asdf",
+                    "time_slot": "2025-05-25T08:15:00"
+                },
+                {
+                    "auditorium_capacity": 341,
+                    "auditorium_id": -452037616,
+                    "auditorium_name": "sdfgsdfg",
+                    "lesson_id": 502,
+                    "subject": "ioio",
+                    "teacher_id": 0,
+                    "teacher_name": "sdfg",
                     "time_slot": "2025-05-25T08:15:00"
                 }
             ],
@@ -107,15 +134,27 @@
             ]
         },
         {
-            "id": 1002,
+            "id": 1004,
             "login": "t",
             "name": "t",
             "password": "t",
             "role": "teacher",
             "subjects": [
-                "матан"
+                "asdf"
             ],
             "расписание": [
+                {
+                    "auditorium_capacity": 341,
+                    "auditorium_id": -452037616,
+                    "auditorium_name": "asdf",
+                    "group_names": [
+                        "VT",
+                        " KB"
+                    ],
+                    "lesson_id": 501,
+                    "subject": "asdf",
+                    "time_slot": "2025-05-25T08:15:00"
+                }
             ]
         }
     ]

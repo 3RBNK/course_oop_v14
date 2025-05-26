@@ -245,6 +245,7 @@ D:/home_work/oop/course/code_v1/cmake-build-debug/course_autogen/6YEA5652QU/moc_
   C:/Program\ Files/JetBrains/CLion\ 2025.1/bin/mingw/x86_64-w64-mingw32/include/wchar.h \
   C:/Program\ Files/JetBrains/CLion\ 2025.1/bin/mingw/x86_64-w64-mingw32/include/wctype.h \
   D:/home_work/oop/course/code_v1/include/auditorium.h \
+  D:/home_work/oop/course/code_v1/include/auth_system.h \
   D:/home_work/oop/course/code_v1/include/group.h \
   D:/home_work/oop/course/code_v1/include/interface.h \
   D:/home_work/oop/course/code_v1/include/lesson.h \
@@ -253,6 +254,7 @@ D:/home_work/oop/course/code_v1/cmake-build-debug/course_autogen/6YEA5652QU/moc_
   D:/home_work/oop/course/code_v1/include/user.h \
   D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QDateTime \
   D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QList \
+  D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QObject \
   D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QSharedPointer \
   D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QString \
   D:/soft/for_qt/6.5.3/mingw_64/include/QtCore/QStringList \

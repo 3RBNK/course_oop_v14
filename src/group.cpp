@@ -1,21 +1,19 @@
 #include "../include/group.h"
 
 Group::Group()
-        : User(), m_course(0)
-{
+        : User(), m_course(0) {
 }
 
 Group::Group(int id, const QString &name, const QString &role,
              const QString &login, const QString &password,
-             int course, const QList<User*> &students)
+             int course, const QList<User *> &students)
         : User(id, name, role, login, password),
           m_course(course),
-          m_students(students)
-{
+          m_students(students) {
 }
 
 
-QList<User*> Group::students() const {
+QList<User *> Group::students() const {
     return m_students;
 }
 
@@ -39,6 +37,6 @@ void Group::delete_student(User *student) {
 }
 
 
-void Group::set_student(const QList<User*> &students) {
+void Group::set_student(const QList<User *> &students) {
     m_students = students;
 }

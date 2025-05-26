@@ -7,8 +7,7 @@ User::User()
           m_name(""),
           m_role(""),
           m_login(""),
-          m_password("")
-{
+          m_password("") {
 }
 
 User::User(int user_id, const QString &name, const QString &role,
@@ -17,8 +16,7 @@ User::User(int user_id, const QString &name, const QString &role,
           m_name(name),
           m_role(role),
           m_login(login),
-          m_password(password)
-{
+          m_password(password) {
 }
 
 int User::id() const {
@@ -54,8 +52,5 @@ QString User::password() const {
 }
 
 bool User::operator==(const User &other) const {
-    bool id_conflict = m_id == other.m_id;
-    bool login_conflict = m_login == other.m_login;
-
-    return id_conflict || login_conflict;
+    return m_login == other.m_login;
 }

@@ -7,7 +7,7 @@
 class CheckCorrect  {
 public:
     explicit CheckCorrect() = default;
-    bool validate_schedule(const QList<QSharedPointer<Lesson>> &lessons);
+    bool validate_schedule(const QList<QSharedPointer < Lesson>> &lessons, int day_index, QTime lesson_time);
     bool validate_users(const QList<User*> &users);
     QStringList errors() const;
 

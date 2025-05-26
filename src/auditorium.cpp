@@ -1,14 +1,13 @@
 #include "../include/auditorium.h"
 
-Auditorium::Auditorium(const QString& auditorium_name)
-        : m_auditorium_name(auditorium_name)
-{
+Auditorium::Auditorium(const QString &auditorium_name)
+        : m_auditorium_name(auditorium_name), m_room_id(0) {
 }
 
 Auditorium::Auditorium()
         : m_room_id(0), m_capacity(0) {}
 
-Auditorium:: Auditorium(int room_id, const QString& auditorium_name, int capacity)
+Auditorium::Auditorium(int room_id, const QString &auditorium_name, int capacity)
         : m_room_id(room_id), m_auditorium_name(auditorium_name), m_capacity(capacity) {}
 
 int Auditorium::room_id() const {
@@ -36,9 +35,9 @@ void Auditorium::set_name(const QString &auditorium_name) {
 }
 
 QString Auditorium::auditorium_info() const {
-    return QString("Ауд. %1 (мест: %2)")
+    return QString("Ауд. %1 %2")
             .arg(m_room_id)
-            .arg(m_capacity);
+            .arg(m_auditorium_name);
 }
 
 bool Auditorium::is_reserved() const {

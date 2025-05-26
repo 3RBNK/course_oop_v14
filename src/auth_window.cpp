@@ -1,22 +1,21 @@
 #include "../include/auth_window.h"
 
 AuthWindow::AuthWindow(QWidget *parent)
-        : QWidget(parent), auth_system(new AuthSystem(this))
-{
+        : QWidget(parent), auth_system(new AuthSystem(this)) {
     setupUI();
 }
 
 void AuthWindow::setupUI() {
-    QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout * layout = new QVBoxLayout(this);
 
-    QLabel *loginLabel = new QLabel("Логин:");
+    QLabel * loginLabel = new QLabel("Логин:");
     login_edit = new QLineEdit();
 
-    QLabel *passwordLabel = new QLabel("Пароль:");
+    QLabel * passwordLabel = new QLabel("Пароль:");
     password_edit = new QLineEdit();
     password_edit->setEchoMode(QLineEdit::Password);
 
-    QPushButton *loginButton = new QPushButton("Войти");
+    QPushButton * loginButton = new QPushButton("Войти");
     status_label = new QLabel();
 
     layout->addWidget(loginLabel);
@@ -42,8 +41,8 @@ void AuthWindow::handleLogin() {
         status_label->setText("Успешный вход!");
 
         Interface *ui = user->role() == "admin" ?
-                        static_cast<Interface*>(new AdminInterface()) :
-                        static_cast<Interface*>(new UserInterface(user));
+                        static_cast<Interface *>(new AdminInterface()) :
+                        static_cast<Interface *>(new UserInterface(user));
 
         ui->display();
 

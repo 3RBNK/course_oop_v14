@@ -8,13 +8,13 @@
 AuthSystem::AuthSystem(QObject *parent) : QObject(parent) {
     try {
         load_users_from_file("D:\\home_work\\oop\\course\\code_v1\\users\\users.json");
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         qDebug() << "Error load users:" << e.what();
     }
 }
 
 
-void AuthSystem::load_users_from_file(const QString& file_path) {
+void AuthSystem::load_users_from_file(const QString &file_path) {
     QFile file(file_path);
     if (!file.open(QIODevice::ReadOnly)) {
         throw std::runtime_error("Не удалось открыть файл для чтения");
@@ -34,14 +34,14 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
 
     if (mainObj.contains("Администраторы")) {
         QJsonArray admins = mainObj["Администраторы"].toArray();
-        for (const auto& adminRef : admins) {
+        for (const auto &adminRef: admins) {
             QJsonObject admin = adminRef.toObject();
-            auto* newAdmin = new User(
-                admin["id"].toInt(),
-                admin["name"].toString(),
-                admin["role"].toString(),
-                admin["login"].toString(),
-                admin["password"].toString()
+            auto *newAdmin = new User(
+                    admin["id"].toInt(),
+                    admin["name"].toString(),
+                    admin["role"].toString(),
+                    admin["login"].toString(),
+                    admin["password"].toString()
             );
             m_users.append(newAdmin);
         }
@@ -50,23 +50,23 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
 
     if (mainObj.contains("Преподаватели")) {
         QJsonArray teachers = mainObj["Преподаватели"].toArray();
-        for (const auto& teacherRef : teachers) {
+        for (const auto &teacherRef: teachers) {
             QJsonObject teacher = teacherRef.toObject();
 
             QStringList subjects;
             if (teacher.contains("subjects")) {
-                for (const auto& subject : teacher["subjects"].toArray()) {
+                for (const auto &subject: teacher["subjects"].toArray()) {
                     subjects.append(subject.toString());
                 }
             }
 
-            auto* newTeacher = new Teacher(
-                teacher["id"].toInt(),
-                teacher["name"].toString(),
-                teacher["role"].toString(),
-                teacher["login"].toString(),
-                teacher["password"].toString(),
-                subjects
+            auto *newTeacher = new Teacher(
+                    teacher["id"].toInt(),
+                    teacher["name"].toString(),
+                    teacher["role"].toString(),
+                    teacher["login"].toString(),
+                    teacher["password"].toString(),
+                    subjects
             );
             m_users.append(newTeacher);
         }
@@ -74,20 +74,20 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
 
     if (mainObj.contains("Группы")) {
         QJsonArray groups = mainObj["Группы"].toArray();
-        for (const auto& groupRef : groups) {
+        for (const auto &groupRef: groups) {
             QJsonObject groupObj = groupRef.toObject();
 
-            QList<User*> group_students;
+            QList<User *> group_students;
             if (groupObj.contains("студенты")) {
                 QJsonArray students = groupObj["студенты"].toArray();
-                for (const auto& studentRef : students) {
+                for (const auto &studentRef: students) {
                     QJsonObject student = studentRef.toObject();
-                    User* newStudent = new User(
-                        student["id"].toInt(),
-                        student["name"].toString(),
-                        "student",
-                        student["login"].toString(),
-                        student["password"].toString()
+                    User *newStudent = new User(
+                            student["id"].toInt(),
+                            student["name"].toString(),
+                            "student",
+                            student["login"].toString(),
+                            student["password"].toString()
                     );
                     group_students.append(newStudent);
                 }
@@ -111,11 +111,11 @@ void AuthSystem::load_users_from_file(const QString& file_path) {
     }
 }
 
-void AuthSystem::save_users_to_json(const QString& file_path) {
+void AuthSystem::save_users_to_json(const QString &file_path) {
     QJsonObject mainObject;
 
     QJsonArray adminsArray;
-    for (const auto* user : m_users) {
+    for (const auto *user: m_users) {
         if (user->role() == "admin") {
             QJsonObject adminObj;
             adminObj["id"] = user->id();
@@ -129,8 +129,8 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
     mainObject["Администраторы"] = adminsArray;
 
     QJsonArray teachersArray;
-    for (const auto* user : m_users) {
-        if (const auto* teacher = dynamic_cast<const Teacher*>(user)) {
+    for (const auto *user: m_users) {
+        if (const auto *teacher = dynamic_cast<const Teacher *>(user)) {
             QJsonObject teacherObj;
             teacherObj["id"] = teacher->id();
             teacherObj["name"] = teacher->name();
@@ -139,7 +139,7 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
             teacherObj["password"] = teacher->password();
 
             QJsonArray subjectsArray;
-            for (const QString& subject : teacher->subjects()) {
+            for (const QString &subject: teacher->subjects()) {
                 subjectsArray.append(subject);
             }
             teacherObj["subjects"] = subjectsArray;
@@ -148,10 +148,10 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
             if (readFile.open(QIODevice::ReadOnly)) {
                 QJsonDocument existingDoc = QJsonDocument::fromJson(readFile.readAll());
                 readFile.close();
-                
+
                 if (existingDoc.isObject()) {
                     auto teachers = existingDoc.object()["Преподаватели"].toArray();
-                    for (const auto& t : teachers) {
+                    for (const auto &t: teachers) {
                         if (t.toObject()["name"].toString() == teacher->name()) {
                             teacherObj["расписание"] = t.toObject()["расписание"];
                             break;
@@ -159,7 +159,7 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
                     }
                 }
             }
-            
+
             teachersArray.append(teacherObj);
         }
     }
@@ -170,22 +170,22 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
     QMap<int, QJsonObject> groupObjects;
     int row = 0;
 
-    QList<Group*> groups;
-    for (auto* user : m_users) {
-        if (auto *group = dynamic_cast<Group*>(user)) {
+    QList<Group *> groups;
+    for (auto *user: m_users) {
+        if (auto *group = dynamic_cast<Group *>(user)) {
             if (group->role() == "group") {
                 groups.append(group);
             }
         }
     }
 
-    QMap<int, Group*> id_group_map;
-    for (auto* group: groups) {
+    QMap < int, Group * > id_group_map;
+    for (auto *group: groups) {
         int id = group->id();
 
         if (id_group_map.contains(id)) {
-            QList<User*> old_student = id_group_map[id]->students();
-            QList<User*> new_student = group->students();
+            QList<User *> old_student = id_group_map[id]->students();
+            QList<User *> new_student = group->students();
             old_student.append(new_student);
             id_group_map[id]->set_student(old_student);
         } else {
@@ -193,7 +193,7 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
         }
     }
 
-    for (auto* group: id_group_map) {
+    for (auto *group: id_group_map) {
         QJsonObject groupObj;
         groupObj["id"] = group->id();
         groupObj["name"] = group->name();
@@ -222,12 +222,12 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
     if (readFile.open(QIODevice::ReadOnly)) {
         QJsonDocument existingDoc = QJsonDocument::fromJson(readFile.readAll());
         readFile.close();
-        
+
         if (existingDoc.isObject() && existingDoc.object().contains("Группы")) {
             auto existingGroups = existingDoc.object()["Группы"].toArray();
-            for (const auto& existingGroup : existingGroups) {
+            for (const auto &existingGroup: existingGroups) {
                 QString groupName = existingGroup.toObject()["name"].toString();
-                for (auto& groupObj : groupObjects) {
+                for (auto &groupObj: groupObjects) {
                     if (groupObj["name"].toString() == groupName) {
                         groupObj["расписание"] = existingGroup.toObject()["расписание"];
                         break;
@@ -237,17 +237,17 @@ void AuthSystem::save_users_to_json(const QString& file_path) {
         }
     }
 
-    for (const auto& groupObj : groupObjects) {
+    for (const auto &groupObj: groupObjects) {
         groupsArray.append(groupObj);
     }
-    
+
     mainObject["Группы"] = groupsArray;
 
     QFile writeFile(file_path);
     if (!writeFile.open(QIODevice::WriteOnly)) {
         throw std::runtime_error("Не удалось открыть файл для записи");
     }
-    
+
     QJsonDocument doc(mainObject);
     writeFile.write(doc.toJson(QJsonDocument::Indented));
     writeFile.close();
@@ -259,13 +259,13 @@ void AuthSystem::add_user(User *user) {
 }
 
 
-QList<User*> AuthSystem::get_users() const {
+QList<User *> AuthSystem::get_users() const {
     return m_users;
 }
 
 User *AuthSystem::login(const QString &login, const QString &password) {
     for (User *user: m_users) {
-        if (auto* group = dynamic_cast<Group*>(user)) {
+        if (auto *group = dynamic_cast<Group *>(user)) {
             for (User *student: group->students()) {
                 if (student->login() == login && student->password() == password) {
                     return group;

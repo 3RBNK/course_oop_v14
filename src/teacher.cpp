@@ -2,21 +2,18 @@
 
 
 Teacher::Teacher()
-        : User(), m_subjects("")
-{
+        : User(), m_subjects("") {
 }
 
 Teacher::Teacher(int id, const QString &name, const QString &role,
                  const QString &login, const QString &password,
                  const QStringList &subjects)
         : User(id, name, role, login, password),
-          m_subjects(subjects)
-{
+          m_subjects(subjects) {
 }
 
 Teacher::Teacher(const QString &name)
-    : User(), m_subjects({})
-{
+        : User(), m_subjects({}) {
     m_name = name;
 }
 

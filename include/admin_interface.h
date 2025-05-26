@@ -11,6 +11,7 @@
 #include "user.h"
 #include "auth_system.h"
 #include "schedule.h"
+#include "check_correct.h"
 
 class AdminInterface : public Interface {
 Q_OBJECT
@@ -33,6 +34,7 @@ private slots:
 private:
     AuthSystem *m_auth_system;
     Schedule *m_schedule;
+    CheckCorrect *m_check_correct;
     QTabWidget *tab_widget;
 
     QWidget *users_tab;

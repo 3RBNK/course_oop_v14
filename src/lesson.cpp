@@ -36,7 +36,7 @@ QString Lesson::lesson_info() const {
             .arg(m_teacher.subjects().join(", "));;
 
     info += "Группы:\n";
-    for (const Group &group : m_groups) {
+    for (const Group &group: m_groups) {
         info += QString("  - %1 (ID: %2, Курс: %3)\n")
                 .arg(group.name())
                 .arg(group.id())
@@ -71,8 +71,8 @@ bool Lesson::operator==(const Lesson &other) const {
     bool room_conflict = m_auditorium.room_id() == other.auditorium().room_id();
 
     bool group_conflict = false;
-    for (const Group &group : m_groups) {
-        for (const Group &otherGroup : other.groups()) {
+    for (const Group &group: m_groups) {
+        for (const Group &otherGroup: other.groups()) {
             if (group.id() == otherGroup.id()) {
                 group_conflict = true;
                 break;

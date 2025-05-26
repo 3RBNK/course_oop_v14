@@ -6,11 +6,13 @@
 #include <QInputDialog>
 #include <QHeaderView>
 #include <QDebug>
+#include <QSharedPointer>
 
 AdminInterface::AdminInterface(QWidget *parent)
         : Interface(parent) {
     m_auth_system = new AuthSystem();
     m_schedule = new Schedule();
+    m_check_correct = new CheckCorrect();
 
     setup_ui();
 
@@ -184,7 +186,7 @@ void AdminInterface::populate_user_combo() {
     user_combo_group->clear();
     user_combo_teacher->clear();
 
-    for (const auto *user : m_auth_system->m_users) {
+    for (const auto *user: m_auth_system->m_users) {
         if (user->role() == "group") {
             user_combo_group->addItem(user->name());
         } else if (user->role() == "teacher") {
@@ -227,7 +229,7 @@ void AdminInterface::refresh_schedule_table() {
     }
 
     User *selected_user = nullptr;
-    for (auto *user : m_auth_system->m_users) {
+    for (auto *user: m_auth_system->m_users) {
         if (user->name() == selected_user_name) {
             selected_user = user;
             break;
@@ -240,16 +242,16 @@ void AdminInterface::refresh_schedule_table() {
 
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
-    for (const auto &lesson : m_schedule->lessons()) {
+    for (const auto &lesson: m_schedule->lessons()) {
 
         QDateTime time_slot = lesson->time_slot();
         int day = time_slot.date().dayOfWeek();
-        int column = day%7;
+        int column = day % 7;
 
         QTime lesson_time = time_slot.time();
 
         int row = -1;
-        if      (lesson_time >= QTime(8, 15) && lesson_time <= QTime(9, 50)) row = 0;
+        if (lesson_time >= QTime(8, 15) && lesson_time <= QTime(9, 50)) row = 0;
         else if (lesson_time >= QTime(10, 0) && lesson_time <= QTime(11, 35)) row = 1;
         else if (lesson_time >= QTime(11, 45) && lesson_time <= QTime(13, 20)) row = 2;
         else if (lesson_time >= QTime(14, 20) && lesson_time <= QTime(15, 55)) row = 3;
@@ -270,6 +272,7 @@ void AdminInterface::refresh_schedule_table() {
         }
     }
 }
+
 void AdminInterface::add_user() {
     QString name = name_edit->text();
     QString login = login_edit->text();
@@ -298,14 +301,15 @@ void AdminInterface::add_user() {
             return;
         }
 
-        QString group_name = QInputDialog::getText(this, "Имя группы", "Введите название группы", QLineEdit::Normal, "", &ok);
+        QString group_name = QInputDialog::getText(this, "Имя группы", "Введите название группы", QLineEdit::Normal, "",
+                                                   &ok);
         if (!ok) {
             QMessageBox::warning(this, "Ошибка", "Необходимо указать имя группы");
             return;
         }
 
         int user_id = generate_unique_user_id();
-        QList<User*> students = {new User(user_id, name, role, login, password)};
+        QList<User *> students = {new User(user_id, name, role, login, password)};
         auto *group = new Group(group_id, group_name, "group", login, password, course, students);
         m_auth_system->add_user(group);
     } else if (role == "teacher") {
@@ -383,7 +387,7 @@ void AdminInterface::delete_user() {
 
 
 void AdminInterface::add_lesson() {
-    QComboBox* active_user_combo = nullptr;
+    QComboBox * active_user_combo = nullptr;
     if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
         active_user_combo = user_combo_group;
     } else if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_teacher)) {
@@ -400,8 +404,8 @@ void AdminInterface::add_lesson() {
         return;
     }
 
-    User* selected_user = nullptr;
-    for (auto* user : m_auth_system->m_users) {
+    User *selected_user = nullptr;
+    for (auto *user: m_auth_system->m_users) {
         if (user->name() == selected_user_name) {
             selected_user = user;
             break;
@@ -448,33 +452,38 @@ void AdminInterface::add_lesson() {
     QString start_time_str = time_slot_str.split('-').first();
     QTime lesson_time = QTime::fromString(start_time_str, "HH:mm");
 
-    if (!lesson_time.isValid()) {
-        QMessageBox::warning(this, "Ошибка", "Формат времени неверный!");
-        return;
+    if (!m_check_correct->validate_schedule(m_schedule->lessons(), day_index, lesson_time)) {
+        QMessageBox::critical(this, "Ошибка", "В это время есть занятие");
     }
-
 
     QDate current_date = QDate::currentDate();
     int days_offset = day_index - (current_date.dayOfWeek() % 7);
     QDate lesson_date = current_date.addDays(days_offset);
 
     QDateTime lesson_datetime(lesson_date, lesson_time);
-
     Auditorium auditorium(auditorium_name);
-    Teacher teacher(teacher_or_group_name);
 
-
-    QList<QSharedPointer<Lesson>> current_lessons = m_schedule->lessons();
-    for (const auto& lesson : current_lessons) {
-        if (lesson->time_slot().date().dayOfWeek() == day_index &&
-            lesson->time_slot().time() == lesson_time) {
-            QMessageBox::warning(this, "Ошибка", "В это время уже есть занятие!");
-            return;
-        }
-    }
 
     int lesson_id = generate_unique_lesson_id();
-    auto new_lesson = QSharedPointer<Lesson>::create(lesson_id, subject, teacher, QList<Group>(), lesson_datetime, auditorium);
+    QSharedPointer <Lesson> new_lesson;
+    if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
+        Teacher teacher(teacher_or_group_name);
+        QList < Group > groups = {Group(0, selected_user->name(), "group", "", "", 0, {})};
+        new_lesson = QSharedPointer<Lesson>::create(lesson_id, subject, teacher, groups, lesson_datetime, auditorium);
+    } else {
+        Teacher teacher(teacher_or_group_name);
+
+        QList < Group > groups;
+        QStringList group_names = teacher_or_group_name.split(",", Qt::SkipEmptyParts);
+        for (auto group_name: group_names) {
+            groups.append(
+                    Group(0, group_name, "group", "", "", 0, {})
+            );
+        }
+
+        new_lesson = QSharedPointer<Lesson>::create(lesson_id, subject, teacher, groups, lesson_datetime, auditorium);
+    }
+
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
     m_schedule->add_lesson(new_lesson);
@@ -496,7 +505,7 @@ void AdminInterface::add_lesson() {
 }
 
 void AdminInterface::delete_lesson() {
-    QComboBox *active_user_combo = nullptr;
+    QComboBox * active_user_combo = nullptr;
     if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
         active_user_combo = user_combo_group;
     } else if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_teacher)) {
@@ -513,7 +522,7 @@ void AdminInterface::delete_lesson() {
     }
 
     User *selected_user = nullptr;
-    for (auto *user : m_auth_system->m_users) {
+    for (auto *user: m_auth_system->m_users) {
         if (user->name() == selected_user_name) {
             selected_user = user;
             break;
@@ -525,11 +534,11 @@ void AdminInterface::delete_lesson() {
         return;
     }
 
-    QList<QTableWidgetItem*> selected_items;
+    QList<QTableWidgetItem *> selected_items;
     if (tab_widget->currentIndex() == tab_widget->indexOf(schedule_tab_for_group)) {
-        selected_items  = schedule_table_group->selectedItems();
+        selected_items = schedule_table_group->selectedItems();
     } else {
-        selected_items  = schedule_table_teacher->selectedItems();
+        selected_items = schedule_table_teacher->selectedItems();
     }
 
     if (selected_items.isEmpty()) {
@@ -547,12 +556,12 @@ void AdminInterface::delete_lesson() {
     }
 
     QTime lesson_time = QTime::fromString(times[row], "HH:mm");
-    int day_of_week = column%7;
+    int day_of_week = column % 7;
 
     m_schedule->load_from_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json", *selected_user);
-    QList<QSharedPointer<Lesson>> lessons = m_schedule->lessons();
+    QList < QSharedPointer < Lesson >> lessons = m_schedule->lessons();
 
-    for (const auto &lesson : lessons) {
+    for (const auto &lesson: lessons) {
         if (lesson->time_slot().time() == lesson_time &&
             lesson->time_slot().date().dayOfWeek() % 7 == day_of_week) {
             m_schedule->remove_lesson(lesson->lesson_id());
@@ -610,7 +619,7 @@ int AdminInterface::generate_unique_user_id() {
 
 int AdminInterface::generate_unique_lesson_id() {
     int max_id = 500;
-    for (const auto &lesson : m_schedule->lessons()) {
+    for (const auto &lesson: m_schedule->lessons()) {
         if (lesson->lesson_id() > max_id) {
             max_id = lesson->lesson_id();
         }
@@ -638,11 +647,11 @@ void AdminInterface::populate_role_combo() {
 
 
 void AdminInterface::save_users_to_json() {
-    try {
+    if (m_check_correct->validate_users(m_auth_system->m_users)) {
         m_auth_system->save_users_to_json("D:\\home_work\\oop\\course\\code_v1\\users\\users.json");
         QMessageBox::information(this, "Успех", "Пользователи успешно сохранены в файл");
-    } catch (const std::exception &e) {
-        QMessageBox::critical(this, "Ошибка", QString("Un save users: %1").arg(e.what()));
+    } else {
+        QMessageBox::critical(this, "Ошибка", QString("Ошибка: %1").arg(m_check_correct->errors().join("\n")));
     }
 }
 
